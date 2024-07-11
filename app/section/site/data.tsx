@@ -1,3 +1,4 @@
+// siteData.tsx
 export const tableData = [
   {
     id: 1,
@@ -13,5 +14,10 @@ export const inputs = [
 export const tableHeads = [
   {
     name: 'Site Name',
+  },
+]
+export const buttonNames = [
+  {
+    name: 'Add Site',
   },
 ]

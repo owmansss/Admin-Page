@@ -24,38 +24,3 @@ export const tableData = [
     status: 'starrt',
   },
 ]
-export const inputs = [
-  {
-    index: 2,
-    placeholder: 'Site Incident',
-  },
-  {
-    index: 3,
-    placeholder: 'User Incident',
-  },
-  {
-    index: 1,
-    placeholder: 'Tanggal Incident',
-  },
-  {
-    index: 4,
-    placeholder: 'Fill User',
-  },
-]
-export const tableHeads = [
-  {
-    name: 'Detail',
-  },
-  {
-    name: 'Tanggal Incident',
-  },
-  {
-    name: 'Site',
-  },
-  {
-    name: 'User',
-  },
-  {
-    name: 'Status',
-  },
-]

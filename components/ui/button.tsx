@@ -23,6 +23,7 @@ const buttonVariants = cva(
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         search: "h-9 rounded-md px-[7vh]",
+        save: "h-9 rounded-md px-[7vh]",
         add: "h-[7vh] rounded-md px-6",
         user: "h-[7vh] rounded-md px-[6vh]",
         lg: "h-11 rounded-md px-10",
