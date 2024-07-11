@@ -37,10 +37,10 @@ export const sectionTableHeads = [
 
 export const sectionButtonNames = [
   {
+    id: 'sectionButton1',
     name: 'Add Incident',
   },
 ]
-// materialData.tsx
 export const materialInputs = [
   {
     index: 2,
@@ -80,13 +80,14 @@ export const materialTableHeads = [
 
 export const materialButtonNames = [
   {
+    id: 'materialButton1',
     name: 'Add New Material',
   },
   {
+    id: 'materialButton2',
     name: 'Add Req Material',
   },
 ]
-// projectData.tsx
 export const projectInputs = [
   {
     index: 2,
@@ -133,11 +134,10 @@ export const projectTableHeads = [
 
 export const projectButtonNames = [
   {
+    id: 'projectButton1',
     name: 'Add New Project',
   },
 ]
-
-// siteData.tsx
 export const siteInputs = [
   {
     index: 1,
@@ -153,10 +153,10 @@ export const siteTableHeads = [
 
 export const siteButtonNames = [
   {
+    id: 'siteButton1',
     name: 'Add Site',
   },
 ]
-// userData.tsx
 export const userInputs = [
   {
     index: 1,
@@ -182,10 +182,10 @@ export const userTableHeads = [
 
 export const userButtonNames = [
   {
+    id: 'userButton1',
     name: 'Add User',
   },
 ]
-// incidentData.tsx
 export const incidentInputs = [
   {
     index: 2,
@@ -225,6 +225,7 @@ export const incidentTableHeads = [
 
 export const incidentButtonNames = [
   {
+    id: 'incidentButton1',
     name: 'Add Incident',
   },
 ]

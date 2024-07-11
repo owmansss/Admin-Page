@@ -1,4 +1,4 @@
-// Material.tsx
+'use client'
 
 import ManagementTable from '@/components/managementTable'
 import {
@@ -9,6 +9,11 @@ import {
 import { tableData } from './data'
 
 export default function Material() {
+  const handleButtonClick = () => {
+    // Add logic
+    console.log('Material Button clicked!')
+  }
+
   return (
     <ManagementTable
       title='Material Management'
@@ -16,6 +21,7 @@ export default function Material() {
       tableHeads={tableHeads}
       tableData={tableData}
       buttonNames={buttonNames}
+      onButtonClick={handleButtonClick}
     />
   )
 }

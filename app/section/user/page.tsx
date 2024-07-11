@@ -1,4 +1,4 @@
-// User.tsx
+'use client'
 
 import ManagementTable from '@/components/managementTable'
 import {
@@ -9,6 +9,11 @@ import {
 import { tableData } from './data'
 
 export default function User() {
+  const handleButtonClick = () => {
+    // Add logic
+    console.log('User Button clicked!')
+  }
+
   return (
     <ManagementTable
       title='User Management'
@@ -16,6 +21,7 @@ export default function User() {
       tableHeads={tableHeads}
       tableData={tableData}
       buttonNames={buttonNames}
+      onButtonClick={handleButtonClick}
     />
   )
 }

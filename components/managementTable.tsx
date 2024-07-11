@@ -1,4 +1,4 @@
-// ManagementTable.tsx
+'use client'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,7 +17,8 @@ interface ManagementTableProps {
   inputs: { index: number; placeholder: string }[]
   tableHeads: { name: string }[]
   tableData: any[]
-  buttonNames: { name: string }[]
+  buttonNames: { id: string; name: string }[] // Assuming `id` is unique
+  onButtonClick: (id: string) => void
 }
 
 const ManagementTable: React.FC<ManagementTableProps> = ({
@@ -26,14 +27,24 @@ const ManagementTable: React.FC<ManagementTableProps> = ({
   tableHeads,
   tableData,
   buttonNames,
+  onButtonClick,
 }) => {
+  const handleClick = (id: string) => {
+    onButtonClick(id)
+  }
+
   return (
     <section className='h-screen flex flex-col ml-12 gap-5 mr-12'>
       <div className='w-full h-[20%] flex justify-between items-end'>
         <h1 className='text-2xl font-bold'>{title}</h1>
         <div className='flex justify-end w-1/2'>
-          {buttonNames.map(({ name }) => (
-            <Button key={name} variant={'destructive'} size={'add'}>
+          {buttonNames.map(({ id, name }) => (
+            <Button
+              key={id}
+              variant={'destructive'}
+              size={'add'}
+              onClick={() => handleClick(id)}
+            >
               {name}
             </Button>
           ))}

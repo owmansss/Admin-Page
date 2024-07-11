@@ -1,4 +1,3 @@
-// materialData.tsx
 export const tableData = [
   {
     id: 1,

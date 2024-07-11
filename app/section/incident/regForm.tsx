@@ -8,10 +8,10 @@ interface RegFormProps {
   buttonNames: { name: string }[]
 }
 
-const RegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+const RegForm: React.FC<RegFormProps> = ({ title }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    // Add logic here to handle form submission
+    // Add logic
   }
 
   return (

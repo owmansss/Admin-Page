@@ -1,4 +1,4 @@
-// Site.tsx
+'use client'
 
 import ManagementTable from '@/components/managementTable'
 import {
@@ -9,6 +9,11 @@ import {
 import { tableData } from './data'
 
 export default function Site() {
+  const handleButtonClick = () => {
+    // Add logic
+    console.log('Site Button clicked!')
+  }
+
   return (
     <ManagementTable
       title='Site Management'
@@ -16,6 +21,7 @@ export default function Site() {
       tableHeads={tableHeads}
       tableData={tableData}
       buttonNames={buttonNames}
+      onButtonClick={handleButtonClick}
     />
   )
 }

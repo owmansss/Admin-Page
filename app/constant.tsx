@@ -39,6 +39,5 @@ export const incidentSum = [
     time: 'Last 3 Weeks',
   },
 ]
-// constants.tsx
 
 

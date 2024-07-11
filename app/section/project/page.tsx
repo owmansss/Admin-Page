@@ -1,4 +1,4 @@
-// Project.tsx
+'use client'
 
 import ManagementTable from '@/components/managementTable'
 import {
@@ -9,6 +9,11 @@ import {
 import { tableData } from './data'
 
 export default function Project() {
+  const handleButtonClick = () => {
+    // Add logic
+    console.log('Project Button clicked!')
+  }
+
   return (
     <ManagementTable
       title='Project Management'
@@ -16,6 +21,7 @@ export default function Project() {
       tableHeads={tableHeads}
       tableData={tableData}
       buttonNames={buttonNames}
+      onButtonClick={handleButtonClick}
     />
   )
 }
