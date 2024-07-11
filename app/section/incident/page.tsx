@@ -1,6 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import ManagementTable from '@/components/managementTable'
+import RegForm from './regForm'
 import {
   incidentTableHeads as tableHeads,
   incidentInputs as inputs,
@@ -9,19 +11,29 @@ import {
 import { tableData } from './data'
 
 export default function Incident() {
-  const handleButtonClick = () => {
-    // Add your button click logic here
-    console.log('Button clicked! Implement your logic here.')
+  const [showRegForm, setShowRegForm] = useState(false)
+
+  const handleButtonClick = (id: string) => {
+    if (id === 'sectionButton1') {
+      setShowRegForm(true)
+    }
+    console.log(`Button with id ${id} clicked! Implement your logic here.`)
   }
 
   return (
-    <ManagementTable
-      title='Incident Management'
-      inputs={inputs}
-      tableHeads={tableHeads}
-      tableData={tableData}
-      buttonNames={buttonNames}
-      onButtonClick={handleButtonClick} // Pass the function as a prop
-    />
+    <>
+      {showRegForm ? (
+        <RegForm title='Add Incident' buttonNames={buttonNames} />
+      ) : (
+        <ManagementTable
+          title='Incident Management'
+          inputs={inputs}
+          tableHeads={tableHeads}
+          tableData={tableData}
+          buttonNames={buttonNames}
+          onButtonClick={handleButtonClick}
+        />
+      )}
+    </>
   )
 }

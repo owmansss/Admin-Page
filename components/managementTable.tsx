@@ -17,7 +17,7 @@ interface ManagementTableProps {
   inputs: { index: number; placeholder: string }[]
   tableHeads: { name: string }[]
   tableData: any[]
-  buttonNames: { id: string; name: string }[] // Assuming `id` is unique
+  buttonNames: { id: string; name: string }[]
   onButtonClick: (id: string) => void
 }
 

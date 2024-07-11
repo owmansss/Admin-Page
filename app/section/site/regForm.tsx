@@ -1,5 +1,3 @@
-// RegForm.tsx
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -11,7 +9,7 @@ interface RegFormProps {
 const RegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    // Add logic here to handle form submission
+    // Add logic
   }
 
   return (
