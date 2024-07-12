@@ -1,6 +1,6 @@
 'use client'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
-import ManagementTable from '@/components/managementTable'
+// import ManagementTable from '@/components/managementTable'
 import {
   siteTableHeads as tableHeads,
   siteInputs as inputs,

@@ -1,6 +1,6 @@
 'use client'
 
-import ManagementTable from '@/components/managementTable'
+// import ManagementTable from '@/components/managementTable'
 import {
   projectTableHeads as tableHeads,
   projectInputs as inputs,

@@ -1,5 +1,6 @@
 'use client'
 
+import axios from 'axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -11,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import React, {useState, useEffect} from 'react'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 interface ManagementTableProps {
   title: string
@@ -32,6 +34,21 @@ const UserTable: React.FC<ManagementTableProps> = ({
   const handleClick = (id: string) => {
     onButtonClick(id)
   }
+  
+  const [userData, setUserData] = useState([])
+
+useEffect(()=>{
+  const getUsers = async() =>{
+    try {
+      const result = await axios.get("http//localhost:5000/users")
+      setUserData(result.data)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  getUsers()
+},[])
 
   return (
     <TabsContent
@@ -72,16 +89,16 @@ const UserTable: React.FC<ManagementTableProps> = ({
             <TableHeader>
               <TableRow className='font-bold text-xl text-black'>
                 <TableHead className='w-[50px]'>No</TableHead>
-                {tableHeads.map(({ name }) => (
-                  <TableHead key={name}>{name}</TableHead>
-                ))}
+                <TableHead className='w-[50px]'>Username</TableHead>
+                <TableHead className='w-[50px]'>Password</TableHead>
+                <TableHead className='w-[50px]'>Role</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {tableData.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
-                    <TableCell key={idx}>{value}</TableCell>
+                    <TableCell key={idx}>{value as String}</TableCell>
                   ))}
                 </TableRow>
               ))}
@@ -92,5 +109,4 @@ const UserTable: React.FC<ManagementTableProps> = ({
     </TabsContent>
   )
 }
-
 export default UserTable

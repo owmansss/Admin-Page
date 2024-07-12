@@ -81,7 +81,7 @@ const SiteTable: React.FC<ManagementTableProps> = ({
               {tableData.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
-                    <TableCell key={idx}>{value}</TableCell>
+                    <TableCell key={idx}>{value as String}</TableCell>
                   ))}
                 </TableRow>
               ))}
