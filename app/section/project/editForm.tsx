@@ -16,7 +16,7 @@ interface RegFormProps {
   buttonNames: { name: string }[]
 }
 
-const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
@@ -24,7 +24,7 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
 
   return (
     <TabsContent
-      value='ProjectAddForm'
+      value='ProjectEditForm'
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
@@ -38,7 +38,7 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
         </div>
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
-        <form onSubmit={handleSubmit} className='w-full'>
+        <form className='w-full'>
           <div className='mb-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Project Name
@@ -96,6 +96,20 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             </div>
           </div>
           <div className='flex items-center justify-between'>
+            <div className='md:w-1/2'>
+              <Select>
+                <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
+                  <SelectValue placeholder='Change Status' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Status</SelectLabel>
+                    <SelectItem value='Done'>Done</SelectItem>
+                    <SelectItem value='Undone'>Undone</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
             <Button type='submit' variant={'destructive'} size={'search'}>
               Submit
             </Button>
@@ -106,4 +120,4 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   )
 }
 
-export default ProjectRegForm
+export default ProjectEditForm

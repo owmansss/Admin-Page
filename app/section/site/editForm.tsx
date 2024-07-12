@@ -7,7 +7,7 @@ interface RegFormProps {
   buttonNames: { name: string }[]
 }
 
-const SiteRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+const SiteEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
@@ -15,7 +15,7 @@ const SiteRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
 
   return (
     <TabsContent
-      value='SiteAddForm'
+      value='SiteEditForm'
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
@@ -51,4 +51,4 @@ const SiteRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   )
 }
 
-export default SiteRegForm
+export default SiteEditForm

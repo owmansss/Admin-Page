@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 interface ManagementTableProps {
   title: string
   inputs: { index: number; placeholder: string }[]
@@ -21,7 +21,7 @@ interface ManagementTableProps {
   onButtonClick: (id: string) => void
 }
 
-const ManagementTable: React.FC<ManagementTableProps> = ({
+const UserTable: React.FC<ManagementTableProps> = ({
   title,
   inputs,
   tableHeads,
@@ -34,20 +34,18 @@ const ManagementTable: React.FC<ManagementTableProps> = ({
   }
 
   return (
-    <section className='h-screen flex flex-col ml-12 gap-5 mr-12'>
+    <TabsContent
+      value='User'
+      className='h-screen flex flex-col ml-12 gap-5 mr-12'
+    >
       <div className='w-full h-[20%] flex justify-between items-end'>
-        <h1 className='text-2xl font-bold'>{title}</h1>
+        <h1 className='text-2xl font-bold'>User Management</h1>
         <div className='flex justify-end w-1/2'>
-          {buttonNames.map(({ id, name }) => (
-            <Button
-              key={id}
-              variant={'destructive'}
-              size={'add'}
-              onClick={() => handleClick(id)}
-            >
-              {name}
-            </Button>
-          ))}
+          <TabsList>
+            <TabsTrigger value='User'>User Management</TabsTrigger>
+            <TabsTrigger value='UserAddForm'>Add New User</TabsTrigger>
+            <TabsTrigger value='UserEditForm'>Edit User</TabsTrigger>
+          </TabsList>
         </div>
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
@@ -91,8 +89,8 @@ const ManagementTable: React.FC<ManagementTableProps> = ({
           </Table>
         </div>
       </div>
-    </section>
+    </TabsContent>
   )
 }
 
-export default ManagementTable
+export default UserTable

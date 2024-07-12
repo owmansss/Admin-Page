@@ -7,7 +7,7 @@ interface RegFormProps {
   buttonNames: { name: string }[]
 }
 
-const MaterialReqForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+const MaterialNewForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
@@ -15,11 +15,11 @@ const MaterialReqForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
 
   return (
     <TabsContent
-      value='MaterialReqForm'
+      value='MaterialNewForm'
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
-        <h1 className='text-2xl font-bold'>Request Management</h1>
+        <h1 className='text-2xl font-bold'>Add New Material</h1>
         <div className='flex justify-end w-1/2'>
           <TabsList>
             <TabsTrigger value='Material'>Material Management</TabsTrigger>
@@ -80,4 +80,4 @@ const MaterialReqForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   )
 }
 
-export default MaterialReqForm
+export default MaterialNewForm

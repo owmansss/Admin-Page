@@ -18,7 +18,7 @@ interface RegFormProps {
   buttonNames: { name: string }[]
 }
 
-const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
@@ -26,11 +26,11 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
 
   return (
     <TabsContent
-      value='IncidentAddForm'
+      value='IncidentEditForm'
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
-        <h1 className='text-2xl font-bold'>Add Incident</h1>
+        <h1 className='text-2xl font-bold'>Edit Incident</h1>
         <div className='flex justify-end w-1/2'>
           <TabsList>
             <TabsTrigger value='Incident'>Incident Management</TabsTrigger>
@@ -39,8 +39,8 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
           </TabsList>
         </div>
       </div>
-      <div className='w-full h-screen gap-5 flex flex-col'>
-        <form onSubmit={handleSubmit} className='w-full'>
+      <div className='w-full h-screen gap-5 flex'>
+        <form onSubmit={handleSubmit} className='w-2/3'>
           <div className='mb-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Email Required
@@ -147,9 +147,43 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             </Button>
           </div>
         </form>
+        <form className='w-1/3 mt-6 flex flex-col'>
+          <Select>
+            <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
+              <SelectValue placeholder='Status' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+                <SelectItem value='kuda'>kuda</SelectItem>
+                <SelectItem value='embe'>embe</SelectItem>
+                <SelectItem value='joni'>joni</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <div className='mt-6'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Detail
+            </label>
+            <textarea
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
+              placeholder='Notes..'
+            />
+          </div>
+          <div className='md:w-1/2 mb-6 md:mb-0'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Ditugaskan Kepada
+            </label>
+            <Input
+              type='email'
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+              placeholder='Fill Email'
+            />
+          </div>
+        </form>
       </div>
     </TabsContent>
   )
 }
 
-export default IncidentRegForm
+export default IncidentEditForm

@@ -1,21 +1,32 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
 
-const RegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+const UserRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
   }
 
   return (
-    <section className='h-screen flex flex-col ml-12 gap-5 mr-12'>
+    <TabsContent
+      value='UserAddForm'
+      className='h-screen flex flex-col ml-12 gap-5 mr-12'
+    >
       <div className='w-full h-[20%] flex justify-between items-end'>
-        <h1 className='text-2xl font-bold'>Add New User</h1>
+        <h1 className='text-2xl font-bold'>{title}</h1>
+        <div className='flex justify-end w-1/2'>
+          <TabsList>
+            <TabsTrigger value='User'>User Management</TabsTrigger>
+            <TabsTrigger value='UserAddForm'>Add New User</TabsTrigger>
+            <TabsTrigger value='UserEditForm'>Edit User</TabsTrigger>
+          </TabsList>
+        </div>
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
         <form onSubmit={handleSubmit} className='w-full'>
@@ -56,8 +67,8 @@ const RegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
           </div>
         </form>
       </div>
-    </section>
+    </TabsContent>
   )
 }
 
-export default RegForm
+export default UserRegForm
