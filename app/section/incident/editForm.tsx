@@ -27,7 +27,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   return (
     <TabsContent
       value='IncidentEditForm'
-      className='h-screen flex flex-col ml-12 gap-5 mr-12'
+      className='h-[100%] flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
         <h1 className='text-2xl font-bold'>Edit Incident</h1>
@@ -39,7 +39,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
           </TabsList>
         </div>
       </div>
-      <div className='w-full h-screen gap-5 flex'>
+      <div className='w-full h-[100%] gap-5 flex'>
         <form onSubmit={handleSubmit} className='w-2/3'>
           <div className='mb-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>

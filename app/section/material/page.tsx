@@ -33,11 +33,11 @@ export default function Material() {
       <TabsContent value='MaterialReqForm'>
         <MaterialReqForm title='Add Req Material' buttonNames={buttonNames} />
       </TabsContent>
-      <TabsContent value='MaterialEditForm'>
-        <MaterialEditForm title='Edit Material' buttonNames={buttonNames} />
-      </TabsContent>
       <TabsContent value='MaterialNewForm'>
         <MaterialNewForm title='New Material' buttonNames={buttonNames} />
+      </TabsContent>
+      <TabsContent value='MaterialEditForm'>
+        <MaterialEditForm title='Edit Material' buttonNames={buttonNames} />
       </TabsContent>
     </Tabs>
   )

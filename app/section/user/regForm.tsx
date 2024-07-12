@@ -1,6 +1,16 @@
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { tableData } from './data'
 
 interface RegFormProps {
   title: string
@@ -54,10 +64,20 @@ const UserRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 Role
               </label>
-              <Input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                placeholder='Fill Role'
-              />
+              <Select>
+                <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
+                  <SelectValue placeholder='Select Role' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {tableData.map(({ role }) => (
+                      <SelectItem key={role} value={role}>
+                        {role}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className='flex items-center justify-between'>

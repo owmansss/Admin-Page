@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -12,8 +10,12 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+
 interface ManagementTableProps {
   title: string
+  editBtn: (id: string) => void
+  onClick: (id: string) => void
   inputs: { index: number; placeholder: string }[]
   tableHeads: { name: string }[]
   tableData: any[]
@@ -22,16 +24,13 @@ interface ManagementTableProps {
 }
 
 const ProjectTable: React.FC<ManagementTableProps> = ({
-  title,
   inputs,
   tableHeads,
   tableData,
-  buttonNames,
-  onButtonClick,
+  editBtn
 }) => {
-  const handleClick = (id: string) => {
-    onButtonClick(id)
-  }
+
+  
 
   return (
     <TabsContent
@@ -75,6 +74,9 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
                 {tableHeads.map(({ name }) => (
                   <TableHead key={name}>{name}</TableHead>
                 ))}
+                <thead>
+                  <td></td>
+                </thead>
               </TableRow>
             </TableHeader>
             <TableBody>

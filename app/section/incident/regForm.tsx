@@ -27,7 +27,7 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   return (
     <TabsContent
       value='IncidentAddForm'
-      className='h-screen flex flex-col ml-12 gap-5 mr-12'
+      className='h-[100%] flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
         <h1 className='text-2xl font-bold'>Add Incident</h1>

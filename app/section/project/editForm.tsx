@@ -1,5 +1,6 @@
+import { useState } from 'react'
+import { tableData } from './data.tsx'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -10,6 +11,16 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { format } from 'date-fns'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
 
 interface RegFormProps {
   title: string
@@ -17,9 +28,27 @@ interface RegFormProps {
 }
 
 const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    // Add logic
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined)
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+
+  const { handleSubmit } = useForm({
+    mode: 'onSubmit',
+  })
+
+  const handleStartDateSelect = (date: Date | Date[] | undefined) => {
+    if (date instanceof Date) {
+      setStartDate(date)
+    }
+  }
+
+  const handleEndDateSelect = (date: Date | Date[] | undefined) => {
+    if (date instanceof Date) {
+      setEndDate(date)
+    }
+  }
+
+  const onSubmit = (data: any) => {
+    console.log('Form Data:', data)
   }
 
   return (
@@ -38,15 +67,26 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
         </div>
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
-        <form className='w-full'>
+        <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
           <div className='mb-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Project Name
             </label>
-            <Input
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-              placeholder='Fill Project Name'
-            />
+            <Select>
+              <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
+                <SelectValue placeholder='Project Name' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>User</SelectLabel>
+                  {tableData.map(({ nama }) => (
+                    <SelectItem key={nama} value={nama}>
+                      {nama}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div className='mb-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -54,7 +94,7 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             </label>
             <textarea
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
-              placeholder='Fill Detail Incident........'
+              placeholder='Fill Detail...'
             />
           </div>
           <div className='mb-6 md:flex md:gap-6'>
@@ -62,19 +102,57 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 Start Date
               </label>
-              <Input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                placeholder='Start Date'
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <div className='relative'>
+                    <Button
+                      variant={'outline'}
+                      className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                    >
+                      {startDate
+                        ? format(startDate, 'yyyy-MM-dd')
+                        : 'Select Date'}
+                      <CalendarIcon className='ml-auto h-4 w-4 opacity-80' />
+                    </Button>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    mode='single'
+                    selected={startDate}
+                    onSelect={handleStartDateSelect}
+                    disabled={(date) => date > new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 End Date
               </label>
-              <Input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                placeholder='End Date'
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <div className='relative'>
+                    <Button
+                      variant={'outline'}
+                      className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                    >
+                      {endDate ? format(endDate, 'yyyy-MM-dd') : 'Select Date'}
+                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                    </Button>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    mode='single'
+                    selected={endDate}
+                    onSelect={handleEndDateSelect}
+                    disabled={(date) => date > new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -87,9 +165,11 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>User</SelectLabel>
-                    <SelectItem value='kuda'>kuda</SelectItem>
-                    <SelectItem value='embe'>embe</SelectItem>
-                    <SelectItem value='joni'>joni</SelectItem>
+                    {tableData.map(({ user }) => (
+                      <SelectItem key={user} value={user}>
+                        {user}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -99,7 +179,7 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <div className='md:w-1/2'>
               <Select>
                 <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
-                  <SelectValue placeholder='Change Status' />
+                  <SelectValue placeholder='Select User' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

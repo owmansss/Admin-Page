@@ -18,10 +18,10 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${inter.className} flex`}>
-        <div className='w-1/3'>
+        <div className='w-1/4'>
           <SideNavbar currentPath={pathname} />
         </div>
-        <main className='w-2/3'>{children}</main>
+        <main className='w-1/2'>{children}</main>
       </body>
     </html>
   )

@@ -82,11 +82,10 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               </label>
               <Select>
                 <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
-                  <SelectValue placeholder='User' />
+                  <SelectValue placeholder='Select User' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>User</SelectLabel>
                     <SelectItem value='kuda'>kuda</SelectItem>
                     <SelectItem value='embe'>embe</SelectItem>
                     <SelectItem value='joni'>joni</SelectItem>

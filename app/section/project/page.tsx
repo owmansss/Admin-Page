@@ -11,6 +11,7 @@ import { Tabs, TabsContent } from '@/components/ui/tabs'
 import ProjectEditForm from './editForm'
 import ProjectRegForm from './regForm'
 import ProjectTable from './dashboard'
+import { useState } from 'react'
 
 interface RegFormProps {
   title: string
@@ -21,6 +22,10 @@ export default function Project() {
   const handleButtonClick = () => {
     // Add logic
     console.log('Project Button clicked!')
+  }
+  const [value, setValue] = useState('ProjectEditForm')
+  const editBtn = () => {
+    console.log('tombol di pencet')
   }
 
   return (
@@ -33,6 +38,8 @@ export default function Project() {
           tableData={tableData}
           buttonNames={buttonNames}
           onButtonClick={handleButtonClick}
+          onClick={editBtn}
+          editBtn={function (id: string): void {}}
         />
       </TabsContent>
       <TabsContent value='ProjectAddForm'>
