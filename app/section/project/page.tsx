@@ -12,6 +12,7 @@ import ProjectEditForm from './editForm'
 import ProjectRegForm from './regForm'
 import ProjectTable from './dashboard'
 import { useState } from 'react'
+import Todo from './todoApp'
 
 interface RegFormProps {
   title: string
@@ -47,6 +48,9 @@ export default function Project() {
       </TabsContent>
       <TabsContent value='ProjectEditForm'>
         <ProjectEditForm title='Edit Project' buttonNames={buttonNames} />
+      </TabsContent>
+      <TabsContent value='ToDo'>
+        <Todo />
       </TabsContent>
     </Tabs>
   )

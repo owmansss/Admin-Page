@@ -1,8 +1,10 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { LucideIcon } from 'lucide-react'
+import { ChevronFirst, ChevronLast, LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { buttonVariants } from './button'
+import { Button, buttonVariants } from './button'
 
 interface NavLink {
   title: string
@@ -17,9 +19,30 @@ interface NavProps {
 }
 
 export function Nav({ links, currentPath }: NavProps) {
+  const [expanded, setExpanded] = useState(true)
+
   return (
-    <div className='flex flex-col h-screen justify-center border-r'>
-      <nav className='grid gap-6 px-2'>
+    <div
+      className={`${
+        expanded ? 'w-1/8' : 'w-20'
+      } w-1/8 overflow-hidden transition-all flex flex-col h-screen justify-center items-end border-r bg-gray-600 text-white gap-5`}
+    >
+      <div className='w-5/6 h-1/2 flex justify-between items-center'>
+        <img
+          src='/vercel.svg'
+          className={`overflow-hidden transition-all ${
+            expanded ? 'w-1/2' : 'w-0'
+          }`}
+        />
+        <Button
+          onClick={() => setExpanded((curr) => !curr)}
+          variant={'destructive'}
+          className='w-[50px] mr-3'
+        >
+          {expanded ? <ChevronFirst /> : <ChevronLast />}
+        </Button>
+      </div>
+      <nav className='flex flex-col mb-[40vh] gap-6 px-2 items-start'>
         {links.map((link, index) => {
           const isActive = currentPath === link.href
 
@@ -28,15 +51,17 @@ export function Nav({ links, currentPath }: NavProps) {
               key={index}
               href={link.href}
               passHref
-              className={cn(
+              className={`${cn(
                 buttonVariants({
                   variant: isActive ? 'destructive' : 'ghost',
                   size: 'lg',
                 })
-              )}
+              )} text-xl w-full`}
             >
-              <link.icon className='mr-2 h-4 w-4' />
-              {link.title}
+              <link.icon
+                className={`${expanded ? 'mr-2' : '-mr-6'} w-6 transition-all`}
+              />
+              {expanded && link.title}
             </Link>
           )
         })}

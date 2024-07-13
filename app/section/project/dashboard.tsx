@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/table'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-
 interface ManagementTableProps {
   title: string
   editBtn: (id: string) => void
@@ -27,11 +26,8 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
   inputs,
   tableHeads,
   tableData,
-  editBtn
+  editBtn,
 }) => {
-
-  
-
   return (
     <TabsContent
       value='Project'
@@ -39,11 +35,14 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
         <h1 className='text-2xl font-bold'>Project Management</h1>
-        <div className='flex justify-end w-1/2'>
+        <div className='flex justify-end w-1/2 gap-5'>
           <TabsList>
             <TabsTrigger value='Project'>Project Management</TabsTrigger>
             <TabsTrigger value='ProjectAddForm'>Add New Project</TabsTrigger>
             <TabsTrigger value='ProjectEditForm'>Edit Project</TabsTrigger>
+          </TabsList>
+          <TabsList>
+            <TabsTrigger value='ToDo'>To Do List</TabsTrigger>
           </TabsList>
         </div>
       </div>

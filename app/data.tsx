@@ -1,14 +1,21 @@
-export const tableData = [
-  {
-    id: 1,
-    username: 'gisuy',
-    password: 'ngopi core',
-    role: 'admin',
-  },
-  {
-    id: 2,
-    username: 'kolay',
-    password: 'nigga nigga pogger',
-    role: 'bandar',
-  },
-]
+export const projectData = {
+  created: 3,
+  closed:2,
+  pending:1
+}
+export const incidentData = {
+  created: 3,
+  closed: 2,
+  pending: 1,
+}
+export const materialData ={
+  available: 3,
+  out:3,
+}
+
+export const ticketTable = {
+  id: 'No',
+  noTicket:'Ticket Number',
+  title:'title',
+  status:'status'
+}

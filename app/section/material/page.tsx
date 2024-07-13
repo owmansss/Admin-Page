@@ -10,7 +10,7 @@ import { tableData } from './data'
 import MaterialTable from './dashboard'
 import MaterialReqForm from './reqForm'
 import MaterialEditForm from './editForm'
-import MaterialNewForm from './newForm'
+import MaterialNewForm from './newMaterial'
 
 export default function Material() {
   const handleButtonClick = () => {
@@ -34,7 +34,7 @@ export default function Material() {
         <MaterialReqForm title='Add Req Material' buttonNames={buttonNames} />
       </TabsContent>
       <TabsContent value='MaterialNewForm'>
-        <MaterialNewForm title='New Material' buttonNames={buttonNames} />
+        <MaterialNewForm />
       </TabsContent>
       <TabsContent value='MaterialEditForm'>
         <MaterialEditForm title='Edit Material' buttonNames={buttonNames} />

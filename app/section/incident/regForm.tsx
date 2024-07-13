@@ -27,7 +27,7 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   return (
     <TabsContent
       value='IncidentAddForm'
-      className='h-[100%] flex flex-col ml-12 gap-5 mr-12'
+      className='h-screen flex flex-col justify-end ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
         <h1 className='text-2xl font-bold'>Add Incident</h1>
@@ -41,8 +41,8 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
         <form onSubmit={handleSubmit} className='w-full'>
-          <div className='mb-6'>
-            <label className='block text-gray-700 text-sm font-bold mb-2'>
+          <div className=''>
+            <label className='block text-gray-700 text-sm font-bold mt-2'>
               Email Required
             </label>
             <Input
@@ -50,7 +50,7 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill email register'
             />
           </div>
-          <div className='mb-6'>
+          <div className=''>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Company
             </label>
@@ -59,7 +59,7 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill Company'
             />
           </div>
-          <div className='mb-6'>
+          <div className=''>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Subject
             </label>
@@ -68,9 +68,9 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill Subject Incident'
             />
           </div>
-          <div className='mb-6 md:flex md:gap-6'>
-            <div className='md:w-1/2 mb-6 md:mb-0'>
-              <label className='block text-gray-700 text-sm font-bold mb-2'>
+          <div className='md:flex md:gap-6'>
+            <div className='md:w-1/2 mt-6 md:mt-0'>
+              <label className='block text-gray-700 text-sm font-bold mt-2'>
                 Project
               </label>
               <Select>
@@ -106,8 +106,8 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               </Select>
             </div>
           </div>
-          <div className='mb-6 md:flex md:gap-6'>
-            <div className='md:w-1/2 mb-6 md:mb-0'>
+          <div className='md:flex md:gap-6'>
+            <div className='md:w-1/2 md:mb-0'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 Site
               </label>
@@ -132,8 +132,8 @@ const IncidentRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               />
             </div>
           </div>
-          <div className='mb-6'>
-            <label className='block text-gray-700 text-sm font-bold mb-2'>
+          <div className=''>
+            <label className='block text-gray-700 text-sm font-bold mt-2'>
               Detail
             </label>
             <textarea

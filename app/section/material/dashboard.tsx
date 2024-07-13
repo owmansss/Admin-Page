@@ -44,7 +44,7 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
         <div className='flex justify-end w-1/2'>
           <TabsList>
             <TabsTrigger value='Material'>Material Management</TabsTrigger>
-            <TabsTrigger value='MaterialAddForm'>Add New Material</TabsTrigger>
+            <TabsTrigger value='MaterialNewForm'>Add New Material</TabsTrigger>
             <TabsTrigger value='MaterialReqForm'>Request Material</TabsTrigger>
             <TabsTrigger value='MaterialEditForm'>Edit Material</TabsTrigger>
           </TabsList>

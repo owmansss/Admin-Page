@@ -29,11 +29,14 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
         <h1 className='text-2xl font-bold'>{title}</h1>
-        <div className='flex justify-end w-1/2'>
+        <div className='flex justify-end w-1/2 gap-5'>
           <TabsList>
             <TabsTrigger value='Project'>Project Management</TabsTrigger>
             <TabsTrigger value='ProjectAddForm'>Add New Project</TabsTrigger>
             <TabsTrigger value='ProjectEditForm'>Edit Project</TabsTrigger>
+          </TabsList>
+          <TabsList>
+            <TabsTrigger value='ToDo'>To Do List</TabsTrigger>
           </TabsList>
         </div>
       </div>
