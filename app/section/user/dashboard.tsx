@@ -1,6 +1,6 @@
 'use client'
 
-import axios from 'axios'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/table'
 import React, {useState, useEffect} from 'react'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+
 interface ManagementTableProps {
   title: string
   inputs: { index: number; placeholder: string }[]
@@ -36,11 +38,10 @@ const UserTable: React.FC<ManagementTableProps> = ({
   }
   
   const [userData, setUserData] = useState([])
-
 useEffect(()=>{
   const getUsers = async() =>{
     try {
-      const result = await axios.get("http//localhost:5000/users")
+      const result = await axios.get("users")
       setUserData(result.data)
     }
     catch(err){
@@ -91,11 +92,13 @@ useEffect(()=>{
                 <TableHead className='w-[50px]'>No</TableHead>
                 <TableHead className='w-[50px]'>Username</TableHead>
                 <TableHead className='w-[50px]'>Password</TableHead>
+                <TableHead className='w-[50px]'>Email</TableHead>
+                <TableHead className='w-[50px]'>Nama</TableHead>
                 <TableHead className='w-[50px]'>Role</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map((data, index) => (
+              {userData.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
                     <TableCell key={idx}>{value as String}</TableCell>

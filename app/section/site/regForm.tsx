@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import React, {useState, useEffect, useRef} from 'react'
+import axios from '../api/axios'
 
 interface RegFormProps {
   title: string
@@ -8,9 +10,23 @@ interface RegFormProps {
 }
 
 const SiteRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+  const [sitename, setSiteName] = useState('')
+  const [message, setMessage] = useState([])
+  
+  const postSite = async () =>{
+   try{ 
+    const result = await axios.post("site", {sitename})
+    setMessage(result.data)
+  }
+  catch(err) {
+    console.log(err)
+  }
+  }
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
+    postSite()
   }
 
   return (
@@ -37,6 +53,9 @@ const SiteRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <Input
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               placeholder='Site Name'
+              type='text'
+              required
+              onChange={(e) => {setSiteName(e.target.value)}}
             />
           </div>
           <div className='mb-6 md:flex md:gap-6'></div>

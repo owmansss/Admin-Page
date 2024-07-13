@@ -1,5 +1,7 @@
 'use client'
 
+import React, {useState, useEffect, useRef} from 'react'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -32,6 +34,26 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
   const handleClick = (id: string) => {
     onButtonClick(id)
   }
+
+  const initialized = useRef(false)
+  const [incData, setIncData] = useState([])
+  
+  const getInc = async() => {
+    try{
+      const result = await axios.get("incident")
+      setIncData(result.data)
+    }
+    catch(err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() =>{
+    if(!initialized.current){
+      initialized.current = true
+      getInc()
+    }
+  }, [] )
 
   return (
     <TabsContent
@@ -72,13 +94,21 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
             <TableHeader>
               <TableRow className='font-bold text-xl text-black'>
                 <TableHead className='w-[50px]'>No</TableHead>
-                {tableHeads.map(({ name }) => (
-                  <TableHead key={name}>{name}</TableHead>
-                ))}
+                <TableHead className='w-[50px]'>Email Requester</TableHead>
+                <TableHead className='w-[50px]'>Company</TableHead>
+                <TableHead className='w-[50px]'>Subject</TableHead>
+                <TableHead className='w-[50px]'>Nama Projek</TableHead>
+                <TableHead className='w-[50px]'>Nama site</TableHead>
+                <TableHead className='w-[50px]'>Severity</TableHead>
+                <TableHead className='w-[50px]'>Detail</TableHead>
+                <TableHead className='w-[50px]'>Status</TableHead>
+                <TableHead className='w-[50px]'>Notes</TableHead>
+                <TableHead className='w-[50px]'>Ditugaskan</TableHead>
+                <TableHead className='w-[50px]'>IdTicket</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map((data, index) => (
+              {incData.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
                     <TableCell key={idx}>{value as String}</TableCell>

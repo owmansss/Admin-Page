@@ -11,6 +11,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { tableData } from './data'
+import axios from '../api/axios'
+import React, {useState, useEffect} from 'react'
 
 interface RegFormProps {
   title: string
@@ -18,9 +20,36 @@ interface RegFormProps {
 }
 
 const UserRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+  const [nama, setnama] = useState('')
+  const [idRole, setIdRole] = useState('')
+  const [email, setemail] = useState('')
+  const [username, setusername] = useState('')
+  const [password, setpassword] = useState('')
+  const [message, setMessage] = useState([])
+  const [roleName, setRoleName] = useState([])
+  
+  const getRoleName = async() => {
+    try{
+      const result = await axios.get('/roles')
+      setRoleName(result.data)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  
+  useEffect(() =>{
+    getRoleName()
+  }, [] )
+
+  
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
+    axios.post('users/admin', {nama, idRole, email,username,password})
+    .then(result => {
+      setMessage(result.data)
+    }).catch(err => {setMessage(err.message)})
   }
 
   return (
@@ -47,6 +76,33 @@ const UserRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <Input
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               placeholder='Username'
+              onChange={(e) => {setusername(e.target.value)}}
+              type='text'
+              required
+            />
+          </div>
+          <div className='mb-6'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Nama
+            </label>
+            <Input
+              type='text'
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+              placeholder='Nama Lengkap'
+              onChange={(e) => {setnama(e.target.value)}}
+              required
+            />
+          </div>
+          <div className='mb-6'>
+            <label className='block text-gray-700 text-sm font-bold mb-2'>
+              Email
+            </label>
+            <Input
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+              placeholder='email'
+              onChange={(e) => {setemail(e.target.value)}}
+              type='email'
+              required
             />
           </div>
           <div className='mb-6 md:flex md:gap-6'>
@@ -57,27 +113,23 @@ const UserRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               <Input
                 type='password'
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                placeholder='End Date'
+                placeholder='Password'
+                onChange={(e) => {setpassword(e.target.value)}}
+                required
               />
             </div>
-            <div className='md:w-1/3'>
+            <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 Role
               </label>
-              <Select>
-                <SelectTrigger className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
-                  <SelectValue placeholder='Select Role' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {tableData.map(({ role }) => (
-                      <SelectItem key={role} value={role}>
-                        {role}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <select required className='form-select' onChange={(e) => {setIdRole(e.target.value)}}>
+                <option selected disabled>pilih role</option>
+                {
+                  roleName.map(role => (
+                    <option value={role.id}>{role.role}</option>
+                  ))
+                }
+              </select>
             </div>
           </div>
           <div className='flex items-center justify-between'>

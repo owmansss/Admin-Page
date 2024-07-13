@@ -1,5 +1,8 @@
 'use client'
 
+import React, {useState, useEffect, useRef} from 'react'
+import axios from '../api/axios'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -32,6 +35,26 @@ const SiteTable: React.FC<ManagementTableProps> = ({
   const handleClick = (id: string) => {
     onButtonClick(id)
   }
+  const initialized = useRef(false)
+  const [siteData, setSiteData] = useState([])
+
+
+  const getSite = async() => {
+    try{
+      const result = await axios.get("site")
+      setSiteData(result.data)
+    }
+    catch(err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() =>{
+    if(!initialized.current){
+      initialized.current = true
+      getSite()
+    }
+  }, [] )
 
   return (
     <TabsContent
@@ -78,7 +101,7 @@ const SiteTable: React.FC<ManagementTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map((data, index) => (
+              {siteData.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
                     <TableCell key={idx}>{value as String}</TableCell>
