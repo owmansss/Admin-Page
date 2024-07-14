@@ -27,6 +27,7 @@ const buttonVariants = cva(
         add: "h-[7vh] rounded-md px-6",
         user: "h-[7vh] rounded-md px-[6vh]",
         lg: "h-11 rounded-md px-10",
+        nav: "w-20 h-11 rounded-md px-10",
         icon: "h-10 w-10",
       },
     },

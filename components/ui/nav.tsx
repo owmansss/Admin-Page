@@ -24,8 +24,8 @@ export function Nav({ links, currentPath }: NavProps) {
   return (
     <div
       className={`${
-        expanded ? 'w-1/8' : 'w-20'
-      } w-1/8 overflow-hidden transition-all flex flex-col h-screen justify-center items-end border-r bg-gray-600 text-white gap-5`}
+        expanded ? 'w-1/8' : 'w-22'
+      } w-1/8 overflow-hidden transition-all flex flex-col h-screen justify-center items-end border-r bg-[#393E46] text-white gap-5`}
     >
       <div className='w-5/6 h-1/2 flex justify-between items-center'>
         <img
@@ -37,34 +37,42 @@ export function Nav({ links, currentPath }: NavProps) {
         <Button
           onClick={() => setExpanded((curr) => !curr)}
           variant={'destructive'}
-          className='w-[50px] mr-3'
+          className={`w-[50px] mr-3 ${!expanded && 'mr-2'} `}
         >
           {expanded ? <ChevronFirst /> : <ChevronLast />}
         </Button>
       </div>
-      <nav className='flex flex-col mb-[40vh] gap-6 px-2 items-start'>
-        {links.map((link, index) => {
-          const isActive = currentPath === link.href
+      <nav className='w-full flex flex-col mb-[40vh] gap-6 px-2'>
+        <div className='flex flex-col items-start w-full gap-6'>
+          {links.map((link, index) => {
+            const isActive = currentPath === link.href
 
-          return (
-            <Link
-              key={index}
-              href={link.href}
-              passHref
-              className={`${cn(
-                buttonVariants({
-                  variant: isActive ? 'destructive' : 'ghost',
-                  size: 'lg',
-                })
-              )} text-xl w-full`}
-            >
-              <link.icon
-                className={`${expanded ? 'mr-2' : '-mr-6'} w-6 transition-all`}
-              />
-              {expanded && link.title}
-            </Link>
-          )
-        })}
+            return (
+              <div
+                className={`w-full gap-x-2 flex flex-col items-start ${cn(
+                  buttonVariants({
+                    variant: isActive ? 'destructive' : 'ghost',
+                    size: 'lg',
+                  })
+                )}`}
+              >
+                <Link
+                  key={index}
+                  href={link.href}
+                  passHref
+                  className='w-full flex gap-x-2 items-center'
+                >
+                  <link.icon
+                    className={`${
+                      expanded ? 'mr-2' : '-mr-8'
+                    } w-6 transition-all`}
+                  />
+                  {expanded && link.title}
+                </Link>
+              </div>
+            )
+          })}
+        </div>
       </nav>
     </div>
   )
