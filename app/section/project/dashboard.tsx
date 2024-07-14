@@ -1,3 +1,5 @@
+import React, {useState, useEffect, useRef} from 'react'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -10,6 +12,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+
 
 interface ManagementTableProps {
   title: string
@@ -28,6 +32,27 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
   tableData,
   editBtn,
 }) => {
+
+  const [value, setValue] = useState([])
+  const initialized = useRef(false)
+  const getProject = async() => {
+   try{ 
+    const result = await axios.get('projek')
+    setValue(result.data)
+  }
+  catch(err){
+    console.log(err)
+  }
+  }
+
+  useEffect(() =>{
+    if(!initialized.current){
+      initialized.current = true
+      getProject()
+    }
+  }, [] )
+
+
   return (
     <TabsContent
       value='Project'
@@ -73,13 +98,10 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
                 {tableHeads.map(({ name }) => (
                   <TableHead key={name}>{name}</TableHead>
                 ))}
-                <thead>
-                  <td></td>
-                </thead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map((data, index) => (
+              {value.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
                     <TableCell key={idx}>{value as String}</TableCell>

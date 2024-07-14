@@ -45,7 +45,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
-    updateData()
+    updatePost()
   }
 
   const [email_requester, setEmailRequester] = useState('')
@@ -55,14 +55,14 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const [id_site, setIdSite] = useState('')
   const [severity, setSeverity] = useState('')
   const [file, setFile] = useState('')
-  const [id_status, setIdStatus] = useState('3')
+  const [id_status, setIdStatus] = useState('')
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
   const [detail, setDetail] = useState('')
   const [idTicket, setIdTicket] = useState('')
   const [selectedSite, setSelectedSite] = useState(false)
-  const [selectedPrjk, setSelectedPrjk] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(false)
+  const [selectedPrjk, setSelectedPrjk] = useState(false)
   const [selectedSeverity, setSelectedSeverity] = useState(false)
   const [selectedIncidentTicket, setSelectedIncidentTicket] = useState(false)
   const initialized = useRef(false)
@@ -70,6 +70,10 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const handleChangesite = (selectedSite) => {
     setSelectedSite(selectedSite)
     setIdSite(selectedSite.value)
+  }
+  const handleChangeStatus = (selectedStatus) => {
+    setSelectedStatus(selectedStatus)
+    setIdStatus(selectedStatus.value)
   }
   const handleChangeIncidentTicket = (selectedIncidentTicket) => {
     setSelectedIncidentTicket(selectedIncidentTicket)
@@ -79,10 +83,6 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
     setSubject(selectedIncidentTicket.value[0].subject)
     setDetail(selectedIncidentTicket.value[0].detail)
     setIdTicket(selectedIncidentTicket.value[0].idTicket)
-  }
-  const handleChangeStatus = (selectedStatus) => {
-    setSelectedStatus(selectedStatus)
-    setIdStatus(selectedStatus.value)
   }
   const handleChangeSeverity = (selectedSeverity) => {
     setSelectedSeverity(selectedSeverity)
@@ -94,7 +94,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   }
   const updatePost = async() =>{
     try {
-      const updateData = await axios.post("incident", {email_requester, company, subject, id_projek, id_site
+      const updateData = await axios.patch("incident", {email_requester, company, subject, id_projek, id_site
         ,severity, file, detail, id_status, notes, email, idTicket
       })
     }
@@ -135,9 +135,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   
   const getStatusId = async() =>{
     try{
-      const resultId = await axios.get("incStatus")
-      optionsStatus = resultId.data.map((data) => {
-        return { value:data.No , label:data.status}
+      const result = await axios.get("incStatus")
+      optionsStatus = result.data.map((data) => {
+        return { value: data.no, label : data.status}
       })
     }
     catch(err) {
@@ -206,6 +206,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               required
               value={email_requester}
               onChange={(e)=>{setEmailRequester(e.target.value)}}
+              type='email'
             />
           </div>
           <div className='mb-6'>
@@ -215,6 +216,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <Input
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               placeholder='Fill Company'
+              type='text'
+              value={company}
+              onChange={(e)=>{setCompany(e.target.value)}}
             />
           </div>
           <div className='mb-6'>
@@ -224,6 +228,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <Input
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               placeholder='Fill Subject Incident'
+              type='text'
+              value={subject}
+              onChange={(e)=>{setSubject(e.target.value)}}
             />
           </div>
           <div className='mb-6 md:flex md:gap-6'>
@@ -276,6 +283,8 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <textarea
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
               placeholder='Fill Detail Incident........'
+              value={detail}
+              onChange={(e)=>{setDetail(e.target.value)}}
             />
           </div>
           <div className='flex items-center justify-between'>
@@ -289,11 +298,11 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 Status
         </label>
         <Select
-                options={optionsStatus}
-                value={selectedStatus}
-                onChange={handleChangeStatus}
-                required
-              />
+              options={optionsStatus}
+              value={selectedStatus}
+              onChange={handleChangeStatus}
+              required
+          />
           <div className='mt-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Detail
@@ -301,6 +310,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <textarea
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
               placeholder='Notes..'
+              onChange={(e)=>{setNotes(e.target.value)}}
             />
           </div>
           <div className='md:w-1/2 mb-6 md:mb-0'>
@@ -311,6 +321,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               type='email'
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               placeholder='Fill Email'
+              onChange={(e)=>{setEmail(e.target.value)}}
             />
           </div>
         </form>
