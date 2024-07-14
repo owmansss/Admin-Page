@@ -6,6 +6,8 @@ import './globals.css'
 import { SideNavbar } from './sidebar'
 import { usePathname } from 'next/navigation'
 import { Profile } from '@/components/ui/profile'
+import Auth from "./auth/page"
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,9 +21,10 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${inter.className} flex`}>
-          <SideNavbar currentPath={pathname} />
+        <Auth/>
+          {/* <SideNavbar currentPath={pathname} />
           <Profile />
-        <main className='w-1/2'>{children}</main>
+        <main className='w-1/2'>{children}</main> */}
       </body>
     </html>
   )

@@ -1,8 +1,22 @@
+'use client';
 import React from 'react'
-export default function LoginForm(){
+import axios from '../../section/api/axios'
+
+
+const LoginForm = ({ toggleForm }) => {
+  const handleSubmit = async(e) => {
+    e.preventDefault()
+    axios.get("http://localhost:5000/users")
+    .then(result => {
+      console.log("test")
+    }).catch(err => () =>{
+      console.log(err)
+    })
+  }
 
   return (
     <form
+      onSubmit={handleSubmit}
       className='flex flex-col justify-center w-full p-10'
       action=''
     >
@@ -23,7 +37,7 @@ export default function LoginForm(){
       </button>
       <h5 className='font-semibold'>
         Don't have an account?{' '}
-        <button className='text-blue-500'>
+        <button onClick={toggleForm} className='text-blue-500'>
           Sign up here.
         </button>
       </h5>
@@ -31,3 +45,4 @@ export default function LoginForm(){
   )
 }
 
+export default LoginForm
