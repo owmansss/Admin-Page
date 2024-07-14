@@ -29,7 +29,7 @@ export function Nav({ links, currentPath }: NavProps) {
     >
       <div className='w-5/6 h-1/2 flex justify-between items-center'>
         <img
-          src='/vercel.svg'
+          src='/logo.png'
           className={`overflow-hidden transition-all ${
             expanded ? 'w-1/2' : 'w-0'
           }`}

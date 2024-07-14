@@ -1,8 +1,8 @@
 
-import ProjectSummary from './projectSummary'
-import IncidentSummary from './incidentSummary'
-import MaterialSummary from './materialSummary'
-import RecentTask from './recentTask'
+import ProjectSummary from './dashboard/projectSummary'
+import IncidentSummary from './dashboard/incidentSummary'
+import MaterialSummary from './dashboard/materialSummary'
+import RecentTask from './dashboard/recentTask'
 
 export default function Dashboard() {
   return (

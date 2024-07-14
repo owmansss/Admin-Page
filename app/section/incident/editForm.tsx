@@ -1,5 +1,3 @@
-// RegForm.tsx
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -20,6 +18,7 @@ interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
+
 
 let optionsPrjk
 let optionsSite

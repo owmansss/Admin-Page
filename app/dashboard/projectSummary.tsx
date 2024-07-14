@@ -1,7 +1,7 @@
 'use client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { projectData } from './data'
-import axios from './section/api/axios'
+import { projectData } from '../data'
+import axios from '../section/api/axios'
 import React,{useState, useEffect, useRef} from 'react'
 
 export default function ProjectSummary() {
