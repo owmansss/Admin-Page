@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import axios from '../api/axios'
 
 export default function MaterialNewForm() {
@@ -9,7 +9,7 @@ export default function MaterialNewForm() {
   const [jumlah, setJumlah] = useState('')
   const [message, setMessage] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
-
+  const initialized = useRef(false)
   
   const postMaterial = async () =>{
     try{ 
@@ -27,8 +27,29 @@ export default function MaterialNewForm() {
     // Add logic
     postMaterial()
   }
+  const [role, setRole] = useState('')
+  const tempDataUser = async() => {
+      try{
+        const result = await axios.get("user/temp")
+        setRole(result.data[0].role)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+
+    useEffect(() => {
+      if (!initialized.current) {
+        initialized.current = true
+        tempDataUser()
+  
+      }
+    },[])
+
   return (
-    <TabsContent
+    <>
+    {role == 'admin'? (<div>
+      <TabsContent
       value='MaterialNewForm'
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
@@ -90,5 +111,10 @@ export default function MaterialNewForm() {
         </form>
       </div>
     </TabsContent>
+    </div>):(<div className='flex justify-center items-center w-full h-screen  mt-2'>
+      <h1 className='text-black text-4xl font-bold'>403 - Forbidden</h1>
+    </div>)}
+    
+    </>
   )
 }

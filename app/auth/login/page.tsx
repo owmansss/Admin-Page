@@ -3,8 +3,6 @@ import axios from '../../section/api/axios'
 import React, {useState, useEffect} from 'react'
 import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation';
-import { NextApiRequest, NextApiResponse } from 'next'
-import { signIn } from '@/auth'
 
 
 const LoginForm = ({ toggleForm }) => {
@@ -18,10 +16,8 @@ const LoginForm = ({ toggleForm }) => {
     e.preventDefault()
     try{
       const result = await axios.post("users/login", {username, password})
-    if(result.data){
       alert("login berhasil")
       router.push("/section/dashboard")
-    }
   }
     catch(err){
       alert(err)

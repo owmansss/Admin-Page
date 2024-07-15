@@ -83,6 +83,7 @@ const MaterialEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
       initialized.current = true
       getMaterial()
       getMaterialStatus()
+      tempDataUser()
 
     }
   },[])
@@ -97,8 +98,22 @@ const MaterialEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
     .catch(err => console.log(err))
   }
 
+
+  const [role, setRole] = useState('')
+  const tempDataUser = async() => {
+      try{
+        const result = await axios.get("user/temp")
+        setRole(result.data[0].role)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+
   return (
-    <TabsContent
+    <>
+    {role == 'admin'? (<div>
+      <TabsContent
       value='MaterialEditForm'
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
@@ -183,6 +198,10 @@ const MaterialEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
         </form>
       </div>
     </TabsContent>
+    </div>):(<div className='flex justify-center items-center w-full h-screen  mt-2'>
+      <h1 className='text-black text-4xl font-bold'>403 - Forbidden</h1>
+    </div>)}
+  </>
   )
 }
 

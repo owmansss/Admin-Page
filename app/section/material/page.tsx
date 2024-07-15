@@ -17,7 +17,6 @@ export default function Material() {
     // Add logic
     console.log('Material Button clicked!')
   }
-
   return (
     <Tabs defaultValue='Material'>
       <TabsContent value='Material'>

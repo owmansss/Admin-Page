@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface ManagementTableProps {
@@ -36,6 +36,20 @@ const UserTable: React.FC<ManagementTableProps> = ({
     onButtonClick(id)
   }
 
+  const [tempData, setTempData] = useState([])
+  const [role, setRole] = useState('')
+  const initialized = useRef(false)
+  const tempDataUser = async() => {
+      try{
+        const result = await axios.get("user/temp")
+        setRole(result.data[0].role)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+
+
   const [userData, setUserData] = useState([])
   useEffect(() => {
     const getUsers = async () => {
@@ -46,11 +60,18 @@ const UserTable: React.FC<ManagementTableProps> = ({
         console.log(err)
       }
     }
-    getUsers()
+    if(!initialized.current){
+      initialized.current = true
+      tempDataUser()
+      getUsers()
+    }
+
   }, [])
 
   return (
-    <TabsContent value='User' className='ml-12 mr-12'>
+    <>
+    {role == 'admin'? (<div>
+      <TabsContent value='User' className='ml-12 mr-12'>
       <div className='w-full h-screen flex flex-col justify-start gap-5'>
         <div className='w-full h-[20%] flex justify-between items-end'>
           <h1 className='text-2xl font-bold'>User Management</h1>
@@ -92,7 +113,7 @@ const UserTable: React.FC<ManagementTableProps> = ({
                   <TableHead className='w-[50px]'>Nama</TableHead>
                   <TableHead className='w-[50px]'>Role</TableHead>
                 </TableRow>
-              </TableHeader>;
+              </TableHeader>
               <TableBody>
                 {userData.map((data, index) => (
                   <TableRow key={data.id || index}>
@@ -107,6 +128,10 @@ const UserTable: React.FC<ManagementTableProps> = ({
         </div>
       </div>
     </TabsContent>
+    </div>) :(<div className='flex justify-center items-center w-full h-screen  mt-2'>
+      <h1 className='text-black text-4xl font-bold'>403 - Forbidden</h1>
+    </div>) }
+    </>
   )
 }
 export default UserTable

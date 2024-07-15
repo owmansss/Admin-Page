@@ -70,7 +70,7 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
           </TabsList>
         </div>
       </div>
-      <div className='w-full h-screen gap-5 flex flex-col'>
+      <div className='w-full h-2/3 gap-5 flex flex-col'>
         <div className='flex'>
           <div className='w-2/3 flex justify-start items-center gap-5'>
             {inputs.map(({ index, placeholder }) => (
@@ -103,8 +103,8 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
                 <TableHead className='w-[50px]'>Detail</TableHead>
                 <TableHead className='w-[50px]'>Status</TableHead>
                 <TableHead className='w-[50px]'>Notes</TableHead>
-                <TableHead className='w-[50px]'>Ditugaskan</TableHead>
-                <TableHead className='w-[50px]'>IdTicket</TableHead>
+                <TableHead className='w-[50px]'>Asignee</TableHead>
+                <TableHead className='w-[50px]'>Ticket ID</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

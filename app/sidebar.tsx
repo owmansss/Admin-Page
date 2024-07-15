@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { Inbox,  Anvil, Notebook, Trash2, Archive, House, File, Speech, Map } from 'lucide-react'
 import { Nav } from '@/components/ui/nav'
 import { LucideIcon } from 'lucide-react'

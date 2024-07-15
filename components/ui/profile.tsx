@@ -14,11 +14,23 @@ import {
 } from './dropdown-menu'
 
 import axios from '../../app/section/api/axios'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { redirect } from 'next/navigation'
 
 export function Profile() {
   const [logout, setLogout] = useState(false)
+  const [tempData, setTempData] = useState([])
+  const initialized = useRef(false)
+    const tempDataUser = async() => {
+        try{
+          const result = await axios.get("user/temp")
+          setTempData(result.data)
+          console.log(result.data)
+        }
+        catch(err) {
+          console.log(err)
+        }
+      }
   const handleLogout = async(e) =>{
     e.preventDefault()
     try{
@@ -31,7 +43,11 @@ export function Profile() {
     }  
   }
   useEffect(()=>{
-    if(logout){
+    if(!initialized.current){
+      initialized.current = true
+      tempDataUser()
+    }
+    else if(logout){
       redirect("/")
     }
 
@@ -53,12 +69,6 @@ export function Profile() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' forceMount>
         <DropdownMenuLabel className='font-normal'>
-          <div className='flex flex-col space-y-1'>
-            <p className='text-sm font-medium leading-none'>UserName</p>
-            <p className='text-xs leading-none text-muted-foreground'>
-              my role is: ....
-            </p>
-          </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

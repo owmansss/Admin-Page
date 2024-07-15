@@ -47,17 +47,24 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
     }
   }
 
+  const [role, setRole] = useState('')
+  const tempDataUser = async() => {
+      try{
+        const result = await axios.get("user/temp")
+        setRole(result.data[0].role)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true
       getMaterial()
+      tempDataUser()
     }
   }, [])
-
-
-
-
-
   return (
     <TabsContent value='Material' className='ml-12 mr-12'>
       <div className='w-full h-screen flex flex-col justify-start gap-5'>

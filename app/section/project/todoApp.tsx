@@ -182,7 +182,7 @@ export default function Todo() {
                   <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                       <CardTitle className='text-sm font-medium'>
-                        To Do: {todos.no} {todos.todo}
+                        Nomor Id To do: {todos.no} {todos.todo}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -256,7 +256,7 @@ export default function Todo() {
                   <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                       <CardTitle className='text-sm font-medium'>
-                        To Do :{todos.todo}
+                        Nomor Id To do :{todos.no} {todos.todo}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -284,7 +284,7 @@ export default function Todo() {
                   <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                       <CardTitle className='text-sm font-medium'>
-                        To Do :{todos.todo}
+                      Nomor Id To do {todos.no} : {todos.todo}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
