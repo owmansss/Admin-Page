@@ -1,5 +1,5 @@
 'use client'
-import Link from "next/link";
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -12,13 +12,13 @@ import Select from 'react-select'
 import axios from '../api/axios'
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 let optionProjek
+let optionTodo
 
 export default function Todo() {
-  const [selectedOption, setSelectedOption] = useState(false)
-  const [selectedOptionStatus, setSelectedOptionStatus] = useState(false)
+  const [selectedOptionTodo, setSelectedOptionTodo] = useState(false)
   const [nama_projek, setNamaProjek] = useState('')
   const [No, setNo] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
@@ -32,7 +32,6 @@ export default function Todo() {
   const [todoList, setTodoList] = useState([])
   const [state, setState] = useState(false)
   const router = useRouter()
-
 
   const [selectedOptionProjek, setSelectedOptionProjek] = useState(false)
   const getProject = async () => {
@@ -57,17 +56,27 @@ export default function Todo() {
   const handleSubmitPending = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
-    axios.patch("todo/pending", {No})
-    .then(result => {alert("pending")})
-    .catch(err => {console.log(err)})
+    axios
+      .patch('todo/pending', { No })
+      .then((result) => {
+        alert('pending')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     router.refresh()
   }
   const handleSubmitFinish = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
-    axios.patch("todo/finish", {No})
-    .then(result => {alert("finish")})
-    .catch(err => {console.log(err)})
+    axios
+      .patch('todo/finish', { No })
+      .then((result) => {
+        alert('finish')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     router.refresh()
   }
 
@@ -79,27 +88,37 @@ export default function Todo() {
     getTodo()
   }
 
+  const handlechangeTodo = (selectedOptionTodo) => {
+    setSelectedOptionTodo(selectedOptionTodo)
+    setNo(selectedOptionTodo.value)
+  }
+
   const onsubmitTodo = (event: React.FormEvent) => {
     event.preventDefault()
-    axios.post("todo/add",{
-      todo, deskripsi, idprojek
-    })
-    .then((result) => alert("todo added"))
-    .catch(err => console.log(err))
+    axios
+      .post('todo/add', {
+        todo,
+        deskripsi,
+        idprojek,
+      })
+      .then((result) => alert('todo added'))
+      .catch((err) => console.log(err))
     router.refresh()
   }
 
-  
-  
-  const getTodo = async() =>{
-    try{
-      const result = await axios.post("todo", {idprojek})
-      if(result.data){
+  const getTodo = async () => {
+    try {
+      const result = await axios.post('todo', { idprojek })
+      if (result.data) {
         setState(true)
         setTodoList(result.data)
+        optionTodo = result.data.map((todoData)=>{
+          return {
+            value : todoData.no, label: todoData.no
+          }
+        })
       }
-    }
-    catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
@@ -125,6 +144,22 @@ export default function Todo() {
             onChange={handleChangeProjek}
             className='w-full '
           />
+          <div className='flex gap-5'>
+            <Select
+              options={optionTodo}
+              value={selectedOptionTodo}
+              onChange={handlechangeTodo}
+              className='w-full '
+            />
+            <div className='w-1/3 flex gap-2'>
+              <Button onClick={handleSubmitFinish} size={'save'} variant={'destructive'}>
+                Finish
+              </Button>
+              <Button onClick={handleSubmitPending} size={'save'} variant={'destructive'}>
+                Pending
+              </Button>
+            </div>
+          </div>
         </div>
         <div className='flex justify-end w-1/2 gap-5'>
           <TabsList>
@@ -141,29 +176,38 @@ export default function Todo() {
         <div className='w-1/4 h-5/6 border-2 border-gray-300 rounded-md mx-5 my-5 flex flex-col justify-between'>
           <h1 className='text-2xl font-bold mt-5 ml-5'>TO DO</h1>
           <div className='w-5/6 h-[80%] mx-auto px-2 my-5 flex flex-col justify-start gap-5 overflow-auto'>
-            {todoList.map((todos) => (
-              todos.status =='submitted' ? <div>
-            <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>To Do: {todos.todo}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className='text-1xl font-bold'>{todos.deskripsi}</div>
-              <button 
-              onClick={handleSubmitFinish}
-              className='text-xs text-muted-foreground text-green-500'>
-                finish 
-              </button>
-              <button
-               onClick={handleSubmitPending} 
-               className='text-xs text-muted-foreground text-red-500'>
-                 pending
-              </button>
-            </CardContent>
-          </Card>
-          </div>:<div></div>
-             
-            ))}
+            {todoList.map((todos) =>
+              todos.status == 'submitted' ? (
+                <div>
+                  <Card>
+                    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                      <CardTitle className='text-sm font-medium'>
+                        To Do: {todos.no} {todos.todo}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className='text-1xl font-bold'>
+                        {todos.deskripsi}
+                      </div>
+                      <button
+                        onClick={handleSubmitFinish}
+                        className='text-xs text-muted-foreground text-green-500'
+                      >
+                        finish
+                      </button>
+                      <button
+                        onClick={handleSubmitPending}
+                        className='text-xs text-muted-foreground text-red-500'
+                      >
+                        pending
+                      </button>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <div></div>
+              )
+            )}
           </div>
           <Popover>
             <PopoverTrigger asChild>
@@ -178,14 +222,25 @@ export default function Todo() {
             <PopoverContent className='w-80'>
               <div className='flex flex-col gap-1'>
                 <label className='text-md'>To Do</label>
-                <Input type='text' className='mb-2'
-                onChange={(e) => {setTodo(e.target.value)}} />
+                <Input
+                  type='text'
+                  className='mb-2'
+                  onChange={(e) => {
+                    setTodo(e.target.value)
+                  }}
+                />
                 <textarea
                   className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
                   placeholder='Add To Do here...nigga nigga nigga pogger pogger pogger niggan nigga pogger'
-                  onChange={(e) => {setDeskripsi(e.target.value)}}
+                  onChange={(e) => {
+                    setDeskripsi(e.target.value)
+                  }}
                 />
-                <Button onClick={onsubmitTodo} variant={'destructive'} size={'save'}>
+                <Button
+                  onClick={onsubmitTodo}
+                  variant={'destructive'}
+                  size={'save'}
+                >
                   Submit
                 </Button>
               </div>
@@ -195,41 +250,57 @@ export default function Todo() {
         <div className='w-1/4 h-5/6 border-2 border-gray-300 rounded-md mx-5 my-5 flex flex-col justify-between'>
           <h1 className='text-2xl font-bold mt-5 ml-5'>Pending</h1>
           <div className='w-5/6 h-[80%] mx-auto px-2 my-5 flex flex-col justify-start gap-5 overflow-auto'>
-          {todoList.map((todos)=> (
-            todos.status == 'pending' ? <div>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do :{todos.todo}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>{todos.deskripsi}</div>
-                <p className='text-xs text-muted-foreground text-red-500'>
-                  {todos.status}
-                </p>
-              </CardContent>
-            </Card>
-            </div>: <div></div>
-          ))}
+            {todoList.map((todos) =>
+              todos.status == 'pending' ? (
+                <div>
+                  <Card>
+                    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                      <CardTitle className='text-sm font-medium'>
+                        To Do :{todos.todo}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className='text-1xl font-bold'>
+                        {todos.deskripsi}
+                      </div>
+                      <p className='text-xs text-muted-foreground text-red-500'>
+                        {todos.status}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <div></div>
+              )
+            )}
           </div>
         </div>
         <div className='w-1/4 h-5/6 border-2 border-gray-300 rounded-md mx-5 my-5 flex flex-col justify-between'>
           <h1 className='text-2xl font-bold mt-5 ml-5'>Finish</h1>
           <div className='w-5/6 h-[80%] mx-auto px-2 my-5 flex flex-col justify-start gap-5 overflow-auto'>
-          {todoList.map((todos)=> (
-            todos.status == 'finish' ? <div>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do :{todos.todo}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>{todos.deskripsi}</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  {todos.status}
-                </p>
-              </CardContent>
-            </Card>
-            </div>: <div></div>
-          ))}
+            {todoList.map((todos) =>
+              todos.status == 'finish' ? (
+                <div>
+                  <Card>
+                    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                      <CardTitle className='text-sm font-medium'>
+                        To Do :{todos.todo}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className='text-1xl font-bold'>
+                        {todos.deskripsi}
+                      </div>
+                      <p className='text-xs text-muted-foreground text-green-500'>
+                        {todos.status}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <div></div>
+              )
+            )}
           </div>
         </div>
       </div>
