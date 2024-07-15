@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { tableData } from './data'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Select } from 'react-select'
+import  Select  from 'react-select'
 import axios from '../api/axios'
 import {
   SelectContent,
@@ -28,6 +28,10 @@ interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
+let optionProjek
+let options
+let optionStatus
+
 const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const [selectedOptionProjek, setSelectedOptionProjek] = useState(false)
   const getProject = async () => {
@@ -144,7 +148,7 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
       getStatus()
       getProject()
     }
-  })
+  },[])
 
   return (
     <TabsContent

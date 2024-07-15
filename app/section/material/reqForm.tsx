@@ -1,16 +1,95 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import  Select  from 'react-select'
+import axios from '../api/axios'
+import React, { useState, useEffect, useRef } from 'react'
 
 interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
 
+let optionsUser
+let optionsSite
+let optionsMaterial
+
 const MaterialReqForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
+  const initialized = useRef(false)
+  const [selectedOptionUser, setSelectedOptionUser] = useState(false)
+  const [selectedOptionSite, setSelectedOptionSite] = useState(false)
+  const [selectedOptionMaterial, setSelectedOptionMaterial] = useState(false)
+  const [id_user, setIdUser] = useState('')
+  const [id_site, setIdSite] = useState('')
+  const [idMaterial, setIdMaterial] = useState('')
+  const [jumlah, setJumlah] = useState('')
+
+  const handleChangeUser = (selectedOptionUser) => {
+    setSelectedOptionUser(selectedOptionUser)
+    setIdUser(selectedOptionUser.value)
+  }
+  const handleChangeSite = (selectedOptionSite) => {
+    setSelectedOptionSite(selectedOptionSite)
+    setIdSite(selectedOptionSite.value)
+  }
+  const handleChangeMaterial = (selectedOptionMaterial) => {
+    setSelectedOptionMaterial(selectedOptionMaterial)
+    setIdMaterial(selectedOptionMaterial.value)
+  }
+
+  const getUsers = async () => {
+    try {
+      const resultUser = await axios.get('users')
+      optionsUser = resultUser.data.map((user) => {
+        return { value: user.id, label: user.username }
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getSite = async () => {
+    try {
+      const resultSite = await axios.get('site')
+      optionsSite = resultSite.data.map((site) => {
+        return { value: site.No, label: site.nama_site }
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  const getMaterial = async () => {
+    try {
+      const resultMaterial = await axios.get('material/stck')
+      optionsMaterial = resultMaterial.data.map((material) => {
+        return { value: material.no, label: material.nama_material }
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true
+      getUsers()
+      getSite()
+      getMaterial()
+
+    }
+  },[])
+
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     // Add logic
+    axios.post("material/req", {
+      id_user,jumlah,id_site,idMaterial
+    }).then((resultadd) => {
+      alert("data berhasil dimasukan")
+    }).catch((error) =>{
+      alert("terjadi error")
+    })
   }
 
   return (
@@ -35,10 +114,12 @@ const MaterialReqForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <label className='block text-gray-700 text-sm font-bold mb-2'>
               Material Name
             </label>
-            <Input
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-              placeholder='Fill Material Name'
-            />
+            <Select
+                  options={optionsMaterial}
+                  value={selectedOptionMaterial}
+                  onChange={handleChangeMaterial}
+                  required
+                />
           </div>
           <div className='mb-6 md:flex md:gap-6'>
             <div className='md:w-1/2 mb-6 md:mb-0'>
@@ -48,25 +129,32 @@ const MaterialReqForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               <Input
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder='Fill Total'
+                type='number'
+                onChange={(e) => setJumlah(e.target.value)}
+                required
               />
             </div>
             <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 Site
               </label>
-              <Input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                placeholder='Fill Site'
-              />
+              <Select
+                  options={optionsSite}
+                  value={selectedOptionSite}
+                  onChange={handleChangeSite}
+                  required
+                />
             </div>
             <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 User
               </label>
-              <Input
-                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                placeholder='User'
-              />
+              <Select
+                  options={optionsUser}
+                  value={selectedOptionUser}
+                  onChange={handleChangeUser}
+                  required
+                />
             </div>
           </div>
           <div className='flex items-center justify-between'>

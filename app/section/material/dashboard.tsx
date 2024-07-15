@@ -1,5 +1,7 @@
 'use client'
 
+import React, { useState, useEffect, useRef } from 'react'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -33,6 +35,27 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
   const handleClick = (id: string) => {
     onButtonClick(id)
   }
+  const [valueMaterial, setValueMaterial] = useState([])
+  const initialized = useRef(false)
+  const getMaterial = async () => {
+    try {
+      const result = await axios.get('material')
+      setValueMaterial(result.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true
+      getMaterial()
+    }
+  }, [])
+
+
+
+
 
   return (
     <TabsContent value='Material' className='ml-12 mr-12'>
@@ -70,7 +93,7 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
               </Button>
             </div>
           </div>
-          <div>
+          <div className='h-1/2 overflow-y-scroll'>
             <Table className='border-2'>
               <TableCaption>end of table</TableCaption>
               <TableHeader>
@@ -82,11 +105,14 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {tableData.map((data, index) => (
-                  <TableRow key={data.id || index}>
-                    {Object.values(data).map((value, idx) => (
-                      <TableCell key={idx}>{value as String}</TableCell>
-                    ))}
+                {valueMaterial.map((data) => (
+                  <TableRow key = {data.no}>
+                    <TableCell>{data.no}</TableCell>  
+                    <TableCell>{data.Nama_Material}</TableCell>  
+                    <TableCell>{data.jumlah}</TableCell>  
+                    <TableCell>{data.nama_site}</TableCell>  
+                    <TableCell>{data.username}</TableCell>  
+                    <TableCell>{data.status}</TableCell>  
                   </TableRow>
                 ))}
               </TableBody>

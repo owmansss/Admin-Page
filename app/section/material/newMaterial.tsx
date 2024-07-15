@@ -1,8 +1,32 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import React, {useState} from 'react'
+import axios from '../api/axios'
 
 export default function MaterialNewForm() {
+  const [namaMaterial, setNamaMaterial] = useState('')
+  const [jumlah, setJumlah] = useState('')
+  const [message, setMessage] = useState('')
+  const [deskripsi, setDeskripsi] = useState('')
+
+  
+  const postMaterial = async () =>{
+    try{ 
+     const result = await axios.post("material/stck", {namaMaterial,jumlah,deskripsi})
+     setMessage(result.data.message)
+     alert(result.data.message)
+   }
+   catch(err) {
+     console.log(err)
+   }
+   }
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    // Add logic
+    postMaterial()
+  }
   return (
     <TabsContent
       value='MaterialNewForm'
@@ -20,7 +44,9 @@ export default function MaterialNewForm() {
         </div>
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
-        <form className='w-full'>
+        <form 
+        onSubmit={handleSubmit}
+        className='w-full'>
           <div className='mb-6 md:flex md:gap-6'>
             <div className='md:w-1/2 mb-6 md:mb-0'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -29,15 +55,19 @@ export default function MaterialNewForm() {
               <Input
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder='Fill Nama'
+                required
+                onChange={(e) => {setNamaMaterial(e.target.value)}}
               />
             </div>
             <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
-                Total
+                Jumlah
               </label>
               <Input
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder='Fill Jumlah Material'
+                onChange={(e) => {setJumlah(e.target.value)}}
+                required
               />
             </div>
           </div>
@@ -48,6 +78,8 @@ export default function MaterialNewForm() {
             <textarea
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
               placeholder='Fill Detail New Material...'
+              required
+              onChange={(e) => {setDeskripsi(e.target.value)}}
             />
           </div>
           <div className='flex items-center justify-between'>

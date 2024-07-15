@@ -21,7 +21,7 @@ export function SideNavbar({ currentPath }: SideNavbarProps) {
   const links: NavLink[] = [
     {
       title: 'Dashboard',
-      href: '/',
+      href: '/section/dashboard',
       icon: House,
       variant: 'ghost',
     },

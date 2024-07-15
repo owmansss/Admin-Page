@@ -1,4 +1,5 @@
 'use client'
+import Link from "next/link";
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -11,20 +12,95 @@ import Select from 'react-select'
 import axios from '../api/axios'
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useRouter } from "next/navigation";
 
-const options = [
-  {
-    value: 'hello',
-    label: 'hello',
-  },
-]
+let optionProjek
 
 export default function Todo() {
   const [selectedOption, setSelectedOption] = useState(false)
+  const [selectedOptionStatus, setSelectedOptionStatus] = useState(false)
+  const [nama_projek, setNamaProjek] = useState('')
+  const [No, setNo] = useState('')
+  const [deskripsi, setDeskripsi] = useState('')
+  const [tanggal_selesai, setTanggalSelesai] = useState('')
+  const [tanggal_mulai, setTanggalMulai] = useState('')
+  const [user, setUser] = useState('')
+  const [id_status, setIdStatus] = useState('')
+  const initialized = useRef(false)
+  const [idprojek, setIdProjek] = useState('0')
+  const [todoList, setTodoList] = useState([])
+  const [state, setState] = useState(false)
+  const router = useRouter()
 
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption)
+
+  const [selectedOptionProjek, setSelectedOptionProjek] = useState(false)
+  const getProject = async () => {
+    const result = await axios.get('projek')
+    optionProjek = result.data.map((data) => {
+      return {
+        value: [
+          {
+            id: data.No,
+            namaProjek: data.nama_projek,
+            deskripsi: data.Deskripsi,
+            tanggalSelesai: data.tanggal_selesai,
+            tanggalMulai: data.tanggal_mulai,
+            user: data.user,
+          },
+        ],
+        label: data.nama_projek,
+      }
+    })
   }
+
+  const handleSubmitPending = (event: React.FormEvent) => {
+    event.preventDefault()
+    // Add logic
+    axios.patch("todo/pending", {No})
+    .then(result => {alert("pending")})
+    .catch(err => {console.log(err)})
+    router.refresh()
+  }
+  const handleSubmitFinish = (event: React.FormEvent) => {
+    event.preventDefault()
+    // Add logic
+    axios.patch("todo/finish", {No})
+    .then(result => {alert("finish")})
+    .catch(err => {console.log(err)})
+    router.refresh()
+  }
+
+  const handleChangeProjek = (selectedOptionProjek) => {
+    setSelectedOptionProjek(selectedOptionProjek)
+    setNamaProjek(selectedOptionProjek.value[0].namaProjek)
+    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
+    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
+    setUser(selectedOptionProjek.value[0].user)
+    setIdProjek(selectedOptionProjek.value[0].id)
+    getTodo()
+  }
+
+  
+  
+  const getTodo = async() =>{
+    try{
+      const result = await axios.post("todo", {idprojek})
+      if(result.data){
+        setState(true)
+        setTodoList(result.data)
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true
+      getProject()
+    }
+  }, [])
 
   return (
     <TabsContent
@@ -35,9 +111,9 @@ export default function Todo() {
         <div className='w-1/4 flex flex-col ml-14 gap-5'>
           <h1 className='text-2xl font-bold'>Detailed Project:</h1>
           <Select
-            options={options}
-            value={selectedOption}
-            onChange={handleChange}
+            options={optionProjek}
+            value={selectedOptionProjek}
+            onChange={handleChangeProjek}
             className='w-full '
           />
         </div>
@@ -56,61 +132,29 @@ export default function Todo() {
         <div className='w-1/4 h-5/6 border-2 border-gray-300 rounded-md mx-5 my-5 flex flex-col justify-between'>
           <h1 className='text-2xl font-bold mt-5 ml-5'>TO DO</h1>
           <div className='w-5/6 h-[80%] mx-auto px-2 my-5 flex flex-col justify-start gap-5 overflow-auto'>
+            {todoList.map((todos) => (
+              todos.status =='submitted' ? <div>
             <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 2:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>To Do: {todos.todo}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='text-1xl font-bold'>{todos.deskripsi}</div>
+              <button 
+              onClick={handleSubmitFinish}
+              className='text-xs text-muted-foreground text-green-500'>
+                finish 
+              </button>
+              <button
+               onClick={handleSubmitPending} 
+               className='text-xs text-muted-foreground text-red-500'>
+                 pending
+              </button>
+            </CardContent>
+          </Card>
+          </div>:<div></div>
+             
+            ))}
           </div>
           <Popover>
             <PopoverTrigger asChild>
@@ -140,66 +184,41 @@ export default function Todo() {
         <div className='w-1/4 h-5/6 border-2 border-gray-300 rounded-md mx-5 my-5 flex flex-col justify-between'>
           <h1 className='text-2xl font-bold mt-5 ml-5'>Pending</h1>
           <div className='w-5/6 h-[80%] mx-auto px-2 my-5 flex flex-col justify-start gap-5 overflow-auto'>
+          {todoList.map((todos)=> (
+            todos.status == 'pending' ? <div>
             <Card>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
+                <CardTitle className='text-sm font-medium'>To Do :{todos.todo}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
+                <div className='text-1xl font-bold'>{todos.deskripsi}</div>
+                <p className='text-xs text-muted-foreground text-red-500'>
+                  {todos.status}
                 </p>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
+            </div>: <div></div>
+          ))}
           </div>
         </div>
         <div className='w-1/4 h-5/6 border-2 border-gray-300 rounded-md mx-5 my-5 flex flex-col justify-between'>
           <h1 className='text-2xl font-bold mt-5 ml-5'>Finish</h1>
           <div className='w-5/6 h-[80%] mx-auto px-2 my-5 flex flex-col justify-start gap-5 overflow-auto'>
+          {todoList.map((todos)=> (
+            todos.status == 'finish' ? <div>
             <Card>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
+                <CardTitle className='text-sm font-medium'>To Do :{todos.todo}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
+                <div className='text-1xl font-bold'>{todos.deskripsi}</div>
                 <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
+                  {todos.status}
                 </p>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>To Do 1:</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='text-1xl font-bold'>open the seseame</div>
-                <p className='text-xs text-muted-foreground text-green-500'>
-                  OnSubmitted
-                </p>
-              </CardContent>
-            </Card>
+            </div>: <div></div>
+          ))}
           </div>
         </div>
       </div>

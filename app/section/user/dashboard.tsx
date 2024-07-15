@@ -83,7 +83,7 @@ const UserTable: React.FC<ManagementTableProps> = ({
               </Button>
             </div>
           </div>
-          <div>
+          <div className='h-1/2 overflow-y-scroll'>
             <Table className='border-2'>
               <TableCaption>end of table</TableCaption>
               <TableHeader>
