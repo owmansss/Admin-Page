@@ -1,3 +1,5 @@
+// RegForm.tsx
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -19,6 +21,10 @@ interface RegFormProps {
   buttonNames: { name: string }[]
 }
 
+let optionsPrjk
+let optionsSite
+let optionsStatus
+let optionInc
 
 const optionSeverity = [
   {
@@ -61,15 +67,15 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const [selectedIncidentTicket, setSelectedIncidentTicket] = useState(false)
   const initialized = useRef(false)
 
-  const handleChangesite = (selectedSite : any) => {
+  const handleChangesite = (selectedSite) => {
     setSelectedSite(selectedSite)
     setIdSite(selectedSite.value)
   }
-  const handleChangeStatus = (selectedStatus: any) => {
+  const handleChangeStatus = (selectedStatus) => {
     setSelectedStatus(selectedStatus)
     setIdStatus(selectedStatus.value)
   }
-  const handleChangeIncidentTicket = (selectedIncidentTicket: any) => {
+  const handleChangeIncidentTicket = (selectedIncidentTicket) => {
     setSelectedIncidentTicket(selectedIncidentTicket)
     setIdTicket(selectedIncidentTicket.value[0].no)
     setEmailRequester(selectedIncidentTicket.value[0].email_requester)
@@ -78,11 +84,11 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
     setDetail(selectedIncidentTicket.value[0].detail)
     setIdTicket(selectedIncidentTicket.value[0].idTicket)
   }
-  const handleChangeSeverity = (selectedSeverity: any) => {
+  const handleChangeSeverity = (selectedSeverity) => {
     setSelectedSeverity(selectedSeverity)
     setSeverity(selectedSeverity.value)
   }
-  const handleChangeprjk = (selectedPrjk: any) => {
+  const handleChangeprjk = (selectedPrjk) => {
     setSelectedPrjk(selectedPrjk)
     setIdProjek(selectedPrjk.value)
   }
@@ -99,7 +105,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const getSiteId = async() =>{
     try{
       const resultId = await axios.get("site")
-      optionsSite = resultId.data.map((data : any) => {
+      optionsSite = resultId.data.map((data) => {
         return { value:data.No , label:data.nama_site}
       })
     }
@@ -111,7 +117,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const getIncidentDetail = async() => {
     try{
     const result = await axios.get('incident')
-    const optionInc = result.data.map((data : any) => {
+    optionInc = result.data.map((data) => {
       return { value: [{
         no : data.no,
         email_requester : data.email_requester,
@@ -130,7 +136,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const getStatusId = async() =>{
     try{
       const result = await axios.get("incStatus")
-      optionsStatus = result.data.map((data: any) => {
+      optionsStatus = result.data.map((data) => {
         return { value: data.no, label : data.status}
       })
     }
@@ -141,7 +147,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const getPrjkId = async() =>{
     try{
       const resultId = await axios.get("projek")
-      optionsPrjk = resultId.data.map((data: any) => {
+      optionsPrjk = resultId.data.map((data) => {
         return { value:data.No , label:data.nama_projek}
       })
     }

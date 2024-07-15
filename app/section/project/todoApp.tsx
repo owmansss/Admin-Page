@@ -14,11 +14,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
 
-<<<<<<< HEAD
-=======
 let optionProjek
 let optionTodo
->>>>>>> f964e10b939180e2310e2a142abb9affb7d9c2dd
 
 export default function Todo() {
   const [selectedOptionTodo, setSelectedOptionTodo] = useState(false)
@@ -149,18 +146,6 @@ export default function Todo() {
           />
           <div className='flex gap-5'>
             <Select
-<<<<<<< HEAD
-              options={optionProjek}
-              value={selectedOptionProjek}
-              onChange={handleChangeProjek}
-              className='w-full '
-            />
-            <div className='w-1/3 flex gap-2'>
-              <Button size={'save'} variant={'destructive'}>
-                Finish
-              </Button>
-              <Button size={'save'} variant={'destructive'}>
-=======
               options={optionTodo}
               value={selectedOptionTodo}
               onChange={handlechangeTodo}
@@ -171,7 +156,6 @@ export default function Todo() {
                 Finish
               </Button>
               <Button onClick={handleSubmitPending} size={'save'} variant={'destructive'}>
->>>>>>> f964e10b939180e2310e2a142abb9affb7d9c2dd
                 Pending
               </Button>
             </div>
@@ -198,11 +182,7 @@ export default function Todo() {
                   <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                       <CardTitle className='text-sm font-medium'>
-<<<<<<< HEAD
-                        To Do: {todos.todo}
-=======
                         To Do: {todos.no} {todos.todo}
->>>>>>> f964e10b939180e2310e2a142abb9affb7d9c2dd
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
