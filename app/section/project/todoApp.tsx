@@ -14,10 +14,14 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
 
+<<<<<<< HEAD
+=======
+let optionProjek
+let optionTodo
+>>>>>>> f964e10b939180e2310e2a142abb9affb7d9c2dd
 
 export default function Todo() {
-  const [selectedOption, setSelectedOption] = useState(false)
-  const [selectedOptionStatus, setSelectedOptionStatus] = useState(false)
+  const [selectedOptionTodo, setSelectedOptionTodo] = useState(false)
   const [nama_projek, setNamaProjek] = useState('')
   const [No, setNo] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
@@ -87,6 +91,11 @@ export default function Todo() {
     getTodo()
   }
 
+  const handlechangeTodo = (selectedOptionTodo) => {
+    setSelectedOptionTodo(selectedOptionTodo)
+    setNo(selectedOptionTodo.value)
+  }
+
   const onsubmitTodo = (event: React.FormEvent) => {
     event.preventDefault()
     axios
@@ -106,6 +115,11 @@ export default function Todo() {
       if (result.data) {
         setState(true)
         setTodoList(result.data)
+        optionTodo = result.data.map((todoData)=>{
+          return {
+            value : todoData.no, label: todoData.no
+          }
+        })
       }
     } catch (err) {
       console.log(err)
@@ -135,6 +149,7 @@ export default function Todo() {
           />
           <div className='flex gap-5'>
             <Select
+<<<<<<< HEAD
               options={optionProjek}
               value={selectedOptionProjek}
               onChange={handleChangeProjek}
@@ -145,6 +160,18 @@ export default function Todo() {
                 Finish
               </Button>
               <Button size={'save'} variant={'destructive'}>
+=======
+              options={optionTodo}
+              value={selectedOptionTodo}
+              onChange={handlechangeTodo}
+              className='w-full '
+            />
+            <div className='w-1/3 flex gap-2'>
+              <Button onClick={handleSubmitFinish} size={'save'} variant={'destructive'}>
+                Finish
+              </Button>
+              <Button onClick={handleSubmitPending} size={'save'} variant={'destructive'}>
+>>>>>>> f964e10b939180e2310e2a142abb9affb7d9c2dd
                 Pending
               </Button>
             </div>
@@ -171,7 +198,11 @@ export default function Todo() {
                   <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                       <CardTitle className='text-sm font-medium'>
+<<<<<<< HEAD
                         To Do: {todos.todo}
+=======
+                        To Do: {todos.no} {todos.todo}
+>>>>>>> f964e10b939180e2310e2a142abb9affb7d9c2dd
                       </CardTitle>
                     </CardHeader>
                     <CardContent>

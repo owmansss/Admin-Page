@@ -1,3 +1,4 @@
+'use client'
 import { Speech } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from './avatar'
 import { Button } from './button'
@@ -12,7 +13,29 @@ import {
   DropdownMenuTrigger,
 } from './dropdown-menu'
 
+import axios from '../../app/section/api/axios'
+import React, {useState, useEffect} from 'react'
+import { redirect } from 'next/navigation'
+
 export function Profile() {
+  const [logout, setLogout] = useState(false)
+  const handleLogout = async(e) =>{
+    e.preventDefault()
+    try{
+      const result = await axios.delete("users/logout")
+      setLogout(true)
+      alert("logout berhasil")
+    }
+    catch(err){
+      alert(err)
+    }  
+  }
+  useEffect(()=>{
+    if(logout){
+      redirect("/")
+    }
+
+  },[logout, redirect])
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,7 +66,9 @@ export function Profile() {
           <DropdownMenuItem>Settings</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <button
+          onClick={(e)=>handleLogout(e)}>
+        Log out</button>
       </DropdownMenuContent>
     </DropdownMenu>
   )
