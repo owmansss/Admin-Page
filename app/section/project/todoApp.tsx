@@ -26,6 +26,7 @@ export default function Todo() {
   const [tanggal_mulai, setTanggalMulai] = useState('')
   const [user, setUser] = useState('')
   const [id_status, setIdStatus] = useState('')
+  const [todo, setTodo] = useState('')
   const initialized = useRef(false)
   const [idprojek, setIdProjek] = useState('0')
   const [todoList, setTodoList] = useState([])
@@ -73,11 +74,19 @@ export default function Todo() {
   const handleChangeProjek = (selectedOptionProjek) => {
     setSelectedOptionProjek(selectedOptionProjek)
     setNamaProjek(selectedOptionProjek.value[0].namaProjek)
-    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
-    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
     setUser(selectedOptionProjek.value[0].user)
     setIdProjek(selectedOptionProjek.value[0].id)
     getTodo()
+  }
+
+  const onsubmitTodo = (event: React.FormEvent) => {
+    event.preventDefault()
+    axios.post("todo/add",{
+      todo, deskripsi, idprojek
+    })
+    .then((result) => alert("todo added"))
+    .catch(err => console.log(err))
+    router.refresh()
   }
 
   
@@ -169,12 +178,14 @@ export default function Todo() {
             <PopoverContent className='w-80'>
               <div className='flex flex-col gap-1'>
                 <label className='text-md'>To Do</label>
-                <Input type='text' className='mb-2' />
+                <Input type='text' className='mb-2'
+                onChange={(e) => {setTodo(e.target.value)}} />
                 <textarea
                   className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
                   placeholder='Add To Do here...nigga nigga nigga pogger pogger pogger niggan nigga pogger'
+                  onChange={(e) => {setDeskripsi(e.target.value)}}
                 />
-                <Button variant={'destructive'} size={'save'}>
+                <Button onClick={onsubmitTodo} variant={'destructive'} size={'save'}>
                   Submit
                 </Button>
               </div>

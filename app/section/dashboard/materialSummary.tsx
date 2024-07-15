@@ -1,6 +1,40 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import axios from '../api/axios'
+import React,{useState, useEffect, useRef} from 'react'
+
 
 export default function MaterialSummary() {
+  const [materialAvailable, setMaterialAvailable] = useState([])
+  const [materialOut, setMaterialOut] = useState([])
+  const initialized = useRef(false)
+  const getMaterialAvailable = async() => {
+    try{
+      const result = await axios.get("material/available")
+      setMaterialAvailable(result.data[0].jumlah)
+    }
+    catch(err) {
+      console.log(err)
+    }
+  }
+  const getMaterialOut = async() => {
+    try{
+      const result = await axios.get("material/out")
+      setMaterialOut(result.data[0].jumlah)
+    }
+    catch(err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() =>{
+    if(!initialized.current){
+      initialized.current = true
+      getMaterialAvailable()
+      getMaterialOut()
+    }
+  }, [] )
+
+
   return (
     <div className='w-1/3'>
       <h1 className='text-xl font-bold mb-4'>Material Summary</h1>
@@ -12,7 +46,7 @@ export default function MaterialSummary() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>3</div>
+            <div className='text-2xl font-bold'>{materialAvailable}</div>
             <p className='text-xs text-muted-foreground text-green-500'>
               Last 3 Weeks
             </p>
@@ -25,7 +59,7 @@ export default function MaterialSummary() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>1</div>
+            <div className='text-2xl font-bold'>{materialOut}</div>
             <p className='text-xs text-muted-foreground text-green-500'>
               Last 3 Weeks
             </p>

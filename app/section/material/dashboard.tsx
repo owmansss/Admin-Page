@@ -24,6 +24,7 @@ interface ManagementTableProps {
   onButtonClick: (id: string) => void
 }
 
+
 const MaterialTable: React.FC<ManagementTableProps> = ({
   title,
   inputs,
