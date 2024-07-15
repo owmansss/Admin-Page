@@ -16,6 +16,7 @@ import {
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 interface ManagementTableProps {
   title: string
+  data: {id : any}
   inputs: { index: number; placeholder: string }[]
   tableHeads: { name: string }[]
   tableData: any[]
@@ -24,11 +25,7 @@ interface ManagementTableProps {
 }
 
 const IncidentTable: React.FC<ManagementTableProps> = ({
-  title,
   inputs,
-  tableHeads,
-  tableData,
-  buttonNames,
   onButtonClick,
 }) => {
   const handleClick = (id: string) => {
@@ -69,7 +66,7 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
             </TabsList>
           </div>
         </div>
-        <div className='w-full h-5/6 gap-5 flex flex-col'>
+        <div className='w-full h-2/3 gap-5 flex flex-col'>
           <div className='flex'>
             <div className='w-2/3 flex justify-start items-center gap-5'>
               {inputs.map(({ index, placeholder }) => (
@@ -87,8 +84,8 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
               </Button>
             </div>
           </div>
-          <div className='h-1/2 overflow-y-scroll'>
-            <Table className='border-2 '>
+          <div className='overflow-y-scroll tracking-tighter'>
+            <Table className='border-2'>
               <TableCaption>end of table</TableCaption>
               <TableHeader>
                 <TableRow className='font-bold text-xl text-black'>
@@ -107,8 +104,8 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {incData.map((data, index) => (
-                  <TableRow key={data.id || index}>
+                {incData.map((id, index, data) => (
+                  <TableRow key={id || index}>
                     {Object.values(data).map((value, idx) => (
                       <TableCell key={idx}>{value as String}</TableCell>
                     ))}

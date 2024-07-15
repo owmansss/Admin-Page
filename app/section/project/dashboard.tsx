@@ -49,10 +49,7 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
   }, [])
 
   return (
-    <TabsContent
-      value='Project'
-      className='ml-12 mr-12'
-    >
+    <TabsContent value='Project' className='ml-12 mr-12'>
       <div className='w-full h-screen flex flex-col justify-start gap-5'>
         <div className='w-full h-[20%] flex justify-between items-end'>
           <h1 className='text-2xl font-bold'>Project Management</h1>
@@ -67,7 +64,7 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
             </TabsList>
           </div>
         </div>
-        <div className='w-full h-screen gap-5 flex flex-col'>
+        <div className='w-full h-2/3 gap-5 flex flex-col'>
           <div className='flex'>
             <div className='w-2/3 flex justify-start items-center gap-5'>
               {inputs.map(({ index, placeholder }) => (
@@ -85,7 +82,7 @@ const ProjectTable: React.FC<ManagementTableProps> = ({
               </Button>
             </div>
           </div>
-          <div className='h-1/2 overflow-y-scroll'>
+          <div className='overflow-y-scroll tracking-tighter'>
             <Table className='border-2'>
               <TableCaption>end of table</TableCaption>
               <TableHeader>
