@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import Select from 'react-select'
 import {
   Table,
   TableBody,
@@ -70,14 +70,10 @@ const IncidentTable: React.FC<IncidentTableProps> = ({
       <div className='w-full h-2/3 gap-5 flex flex-col'>
         <div className='flex'>
           <div className='w-2/3 flex justify-start items-center gap-5'>
-            {inputs.map(({ index, placeholder }) => (
-              <Input
-                key={index}
-                type='text'
-                placeholder={placeholder}
-                className='w-1/3 text-sm text-center'
-              />
-            ))}
+          <Select />
+          <Select />
+          <Select />
+          <Select />
           </div>
           <div className='w-1/3 flex justify-end'>
             <Button variant={'destructive'} size={'search'}>

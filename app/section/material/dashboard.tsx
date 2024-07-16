@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import Select from 'react-select'
 
 interface ManagementTableProps {
   title: string
@@ -86,14 +87,10 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
         <div className='w-full h-2/3 gap-5 flex flex-col'>
           <div className='flex'>
             <div className='w-2/3 flex justify-start items-center gap-5'>
-              {inputs.map(({ index, placeholder }) => (
-                <Input
-                  key={index}
-                  type='text'
-                  placeholder={placeholder}
-                  className='w-1/3 text-sm text-center'
-                />
-              ))}
+            <Select />
+            <Select />
+            <Select />
+            <Select />
             </div>
             <div className='w-1/3 flex justify-end'>
               <Button variant='destructive' size='search'>
