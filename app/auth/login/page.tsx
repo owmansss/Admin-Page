@@ -1,58 +1,60 @@
-'use client';
+'use client'
 import axios from '../../section/api/axios'
-import React, {useState, useEffect} from 'react'
-import { redirect } from 'next/navigation'
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
+interface LoginFormProps {
+  toggleForm: () => void
+}
 
-const LoginForm = ({ toggleForm }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+const LoginForm: React.FC<LoginFormProps> = ({ toggleForm }) => {
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
-  
-  const handleSubmit = async(e) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    try{
-      const result = await axios.post("users/login", {username, password})
-      alert("login berhasil")
-      router.push("/section/dashboard")
-  }
-    catch(err){
-      alert(err)
+    setIsLoading(true)
+    try {
+      const result = await axios.post('users/login', { username, password })
+      alert('Login successful')
+      router.push('/section/dashboard')
+    } catch (err) {
+      alert(err.message || 'An error occurred')
+    } finally {
+      setIsLoading(false)
     }
   }
-  // useEffect(()=>{
-  //   if(isSuccess){
-  //     redirect("/section/dashboard")
-  //   }
-  // },[isSuccess, redirect])
 
   return (
     <form
-    onSubmit={(e)=>handleSubmit(e)}
+      onSubmit={handleSubmit}
       className='flex flex-col justify-center w-full p-10'
-      action=''
     >
       <h3 className='text-red-500 tracking-tighter'>LOGIN</h3>
       <label className='text-lg font-semibold'>Username</label>
-      <input type='text' className='h-10 border-2 p-1 rounded-md' value={username}
-        onChange={(e) => {setUsername(e.target.value)}}
-       required />
+      <input
+        type='text'
+        className='h-10 border-2 p-1 rounded-md'
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
       <label className='text-lg font-semibold'>Password</label>
       <input
-        value={password}
         type='password'
         className='h-10 border-2 p-1 rounded-md'
-        onChange={(e) => {setPassword(e.target.value)}}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         required
       />
       <button
         type='submit'
         className='w-1/2 h-[30px] my-5 rounded-lg text-center text-[20px] font-bold bg-red-500 text-white'
+        disabled={isLoading}
       >
-        {isLoading? 'loading...' : "Login"}
+        {isLoading ? 'Loading...' : 'Login'}
       </button>
       <h5 className='font-semibold'>
         Don't have an account?{' '}

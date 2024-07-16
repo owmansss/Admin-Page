@@ -1,22 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tableData } from './data'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import  Select  from 'react-select'
-import axios from '../api/axios'
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import Select from 'react-select'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import {
   Popover,
   PopoverContent,
@@ -28,42 +18,24 @@ interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
-let optionProjek
-let options
-let optionStatus
 
 const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
-  const [selectedOptionProjek, setSelectedOptionProjek] = useState(false)
-  const getProject = async () => {
-    const result = await axios.get('projek')
-    optionProjek = result.data.map((data) => {
-      return {
-        value: [
-          {
-            id: data.No,
-            namaProjek: data.nama_projek,
-            deskripsi: data.Deskripsi,
-            tanggalSelesai: data.tanggal_selesai,
-            tanggalMulai: data.tanggal_mulai,
-            user: data.user,
-          },
-        ],
-        label: data.nama_projek,
-      }
-    })
-  }
-  const handleChangeProjek = (selectedOptionProjek) => {
-    setSelectedOptionProjek(selectedOptionProjek)
-    setNamaProjek(selectedOptionProjek.value[0].namaProjek)
-    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
-    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
-    setEndDate(selectedOptionProjek.value[0].tanggalSelesai)
-    setStartDate(selectedOptionProjek.value[0].tanggalMulai)
-    setUser(selectedOptionProjek.value[0].user)
-    setNo(selectedOptionProjek.value[0].id)
-  }
+  const [selectedOptionProjek, setSelectedOptionProjek] = useState<any>(false)
+  const [selectedOption, setSelectedOption] = useState<any>(false)
+  const [selectedOptionStatus, setSelectedOptionStatus] = useState<any>(false)
+  const [nama_projek, setNamaProjek] = useState('')
+  const [No, setNo] = useState('')
+  const [deskripsi, setDeskripsi] = useState('')
+  const [tanggal_selesai, setTanggalSelesai] = useState('')
+  const [tanggal_mulai, setTanggalMulai] = useState('')
+  const [user, setUser] = useState('')
+  const [id_status, setIdStatus] = useState('')
   const [startDate, setStartDate] = useState<Date | undefined>(undefined)
   const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+  const [options, setOptions] = useState<any[]>([])
+  const [optionProjek, setOptionProjek] = useState<any[]>([])
+  const [optionStatus, setOptionStatus] = useState<any[]>([])
+  const initialized = useRef(false)
 
   const { handleSubmit } = useForm({
     mode: 'onSubmit',
@@ -101,22 +73,13 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
     console.log(startDate)
     console.log(tanggal_mulai)
   }
-  const [selectedOption, setSelectedOption] = useState(false)
-  const [selectedOptionStatus, setSelectedOptionStatus] = useState(false)
-  const [nama_projek, setNamaProjek] = useState('')
-  const [No, setNo] = useState('')
-  const [deskripsi, setDeskripsi] = useState('')
-  const [tanggal_selesai, setTanggalSelesai] = useState('')
-  const [tanggal_mulai, setTanggalMulai] = useState('')
-  const [user, setUser] = useState('')
-  const [id_status, setIdStatus] = useState('')
-  const initialized = useRef(false)
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (selectedOption: any) => {
     setSelectedOption(selectedOption)
     setUser(selectedOption.value)
   }
-  const handleChangeStatus = (selectedOptionStatus) => {
+
+  const handleChangeStatus = (selectedOptionStatus: any) => {
     setSelectedOptionStatus(selectedOptionStatus)
     setIdStatus(selectedOptionStatus.value)
   }
@@ -124,23 +87,51 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
   const getUsers = async () => {
     try {
       const result = await axios.get('users')
-      options = result.data.map((user) => {
-        return { value: user.username, label: user.username }
-      })
+      const options = result.data.map((user: any) => ({
+        value: user.username,
+        label: user.username,
+      }))
+      setOptions(options)
     } catch (err) {
       console.log(err)
     }
   }
+
   const getStatus = async () => {
     try {
       const result = await axios.get('statusProjek')
-      optionStatus = result.data.map((status) => {
-        return { value: status.id, label: status.status }
-      })
+      const optionStatus = result.data.map((status: any) => ({
+        value: status.id,
+        label: status.status,
+      }))
+      setOptionStatus(optionStatus)
     } catch (err) {
       console.log(err)
     }
   }
+
+  const getProject = async () => {
+    try {
+      const result = await axios.get('projek')
+      const optionProjek = result.data.map((data: any) => ({
+        value: [
+          {
+            id: data.No,
+            namaProjek: data.nama_projek,
+            deskripsi: data.Deskripsi,
+            tanggalSelesai: data.tanggal_selesai,
+            tanggalMulai: data.tanggal_mulai,
+            user: data.user,
+          },
+        ],
+        label: data.nama_projek,
+      }))
+      setOptionProjek(optionProjek)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true
@@ -148,7 +139,17 @@ const ProjectEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
       getStatus()
       getProject()
     }
-  },[])
+  }, [])
+
+  const handleChangeProjek = (selectedOptionProjek: any) => {
+    setSelectedOptionProjek(selectedOptionProjek)
+    setNamaProjek(selectedOptionProjek.value[0].namaProjek)
+    setDeskripsi(selectedOptionProjek.value[0].deskripsi)
+    setTanggalMulai(selectedOptionProjek.value[0].tanggalMulai)
+    setTanggalSelesai(selectedOptionProjek.value[0].tanggalSelesai)
+    setUser(selectedOptionProjek.value[0].user)
+    setNo(selectedOptionProjek.value[0].id)
+  }
 
   return (
     <TabsContent

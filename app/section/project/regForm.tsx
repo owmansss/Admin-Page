@@ -1,93 +1,92 @@
+import React, { useState, useEffect, useRef } from 'react'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Select from 'react-select'
-import axios from '../api/axios'
-import React, {useState, useEffect, useRef} from 'react'
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
 
-let options
-let optionStatus
 const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
-  const [selectedOption, setSelectedOption] = useState(false)
-  const [selectedOptionStatus, setSelectedOptionStatus] = useState(false)
+  const [selectedOption, setSelectedOption] = useState<any>(false)
+  const [selectedOptionStatus, setSelectedOptionStatus] = useState<any>(false)
   const [nama_projek, setNamaProjek] = useState('')
   const [deskripsi, setDeskripsi] = useState('')
   const [tanggal_selesai, setTanggalSelesai] = useState('')
   const [tanggal_mulai, setTanggalMulai] = useState('')
   const [user, setUser] = useState('')
   const [id_status, setIdStatus] = useState('')
+  const [options, setOptions] = useState<any[]>([])
+  const [optionStatus, setOptionStatus] = useState<any[]>([])
   const initialized = useRef(false)
-  
-  const handleChange = (selectedOption) =>{
+
+  const handleChange = (selectedOption: any) => {
     setSelectedOption(selectedOption)
     setUser(selectedOption.value)
   }
-  const handleChangeStatus = (selectedOptionStatus) =>{
+
+  const handleChangeStatus = (selectedOptionStatus: any) => {
     setSelectedOptionStatus(selectedOptionStatus)
     setIdStatus(selectedOptionStatus.value)
   }
-  
-  const getUsers = async() => {
-    try{
-      const result = await axios.get("users")
-      options = result.data.map((user) => {
-        return { value: user.username, label: user.username}
-      })
-    }
-    catch(err){
-      console.log(err)
-    }
-  }
-  const getStatus = async() => {
-    try{
-      const result = await axios.get("statusProjek")
-      optionStatus = result.data.map((status) => {
-        return { value: status.id, label: status.status}
-      })
-    }
-    catch(err){
+
+  const getUsers = async () => {
+    try {
+      const result = await axios.get('users')
+      const options = result.data.map((user: any) => ({
+        value: user.username,
+        label: user.username,
+      }))
+      setOptions(options)
+    } catch (err) {
       console.log(err)
     }
   }
 
-  const postProjek = async() => {
-    try{
-      const result = await axios.post("projek", {nama_projek, deskripsi, tanggal_selesai, tanggal_mulai, user, id_status})
+  const getStatus = async () => {
+    try {
+      const result = await axios.get('statusProjek')
+      const optionStatus = result.data.map((status: any) => ({
+        value: status.id,
+        label: status.status,
+      }))
+      setOptionStatus(optionStatus)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const postProjek = async () => {
+    try {
+      const result = await axios.post('projek', {
+        nama_projek,
+        deskripsi,
+        tanggal_selesai,
+        tanggal_mulai,
+        user,
+        id_status,
+      })
       console.log(result.data)
-    }
-    catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
-
 
   useEffect(() => {
-    if(!initialized.current){
+    if (!initialized.current) {
       initialized.current = true
       getUsers()
       getStatus()
     }
-  })
+  }, [])
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    // Add logic
     postProjek()
   }
-
   return (
     <TabsContent
       value='ProjectAddForm'
@@ -117,7 +116,9 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill Project Name'
               type='text'
               required
-              onChange={(e) => {setNamaProjek(e.target.value)}}
+              onChange={(e) => {
+                setNamaProjek(e.target.value)
+              }}
             />
           </div>
           <div className='mb-6'>
@@ -127,7 +128,9 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <textarea
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
               placeholder='Fill Detail Incident........'
-              onChange={(e) => {setDeskripsi(e.target.value)}}
+              onChange={(e) => {
+                setDeskripsi(e.target.value)
+              }}
               required
             />
           </div>
@@ -140,7 +143,9 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder='Start Date'
                 type='date'
-                onChange={(e) => {setTanggalMulai(e.target.value)}}
+                onChange={(e) => {
+                  setTanggalMulai(e.target.value)
+                }}
               />
             </div>
             <div className='md:w-1/2'>
@@ -151,7 +156,9 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder='End Date'
                 type='date'
-                onChange={(e) => {setTanggalSelesai(e.target.value)}}
+                onChange={(e) => {
+                  setTanggalSelesai(e.target.value)
+                }}
               />
             </div>
             <div className='md:w-1/2'>
@@ -159,22 +166,22 @@ const ProjectRegForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 User
               </label>
               <Select
-              options={options}
-              value={selectedOption}
-              onChange={handleChange}
-              required
-            />
+                options={options}
+                value={selectedOption}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className='md:w-1/2'>
               <label className='block text-gray-700 text-sm font-bold mb-2'>
                 Status
               </label>
               <Select
-              options={optionStatus}
-              value={selectedOptionStatus}
-              onChange={handleChangeStatus}
-              required
-            />
+                options={optionStatus}
+                value={selectedOptionStatus}
+                onChange={handleChangeStatus}
+                required
+              />
             </div>
           </div>
           <div className='flex items-center justify-between'>

@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useState, useEffect, useRef } from 'react'
 import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
@@ -19,11 +17,10 @@ interface ManagementTableProps {
   title: string
   inputs: { index: number; placeholder: string }[]
   tableHeads: { name: string }[]
-  tableData: any[]
+  tableData: any[] // Consider defining a type for tableData
   buttonNames: { id: string; name: string }[]
   onButtonClick: (id: string) => void
 }
-
 
 const MaterialTable: React.FC<ManagementTableProps> = ({
   title,
@@ -33,11 +30,11 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
   buttonNames,
   onButtonClick,
 }) => {
-  const handleClick = (id: string) => {
-    onButtonClick(id)
-  }
-  const [valueMaterial, setValueMaterial] = useState([])
+  const [valueMaterial, setValueMaterial] = useState<any[]>([])
+  const [role, setRole] = useState<string>('') // Assuming role is a string
+
   const initialized = useRef(false)
+
   const getMaterial = async () => {
     try {
       const result = await axios.get('material')
@@ -47,16 +44,14 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
     }
   }
 
-  const [role, setRole] = useState('')
-  const tempDataUser = async() => {
-      try{
-        const result = await axios.get("user/temp")
-        setRole(result.data[0].role)
-      }
-      catch(err) {
-        console.log(err)
-      }
+  const tempDataUser = async () => {
+    try {
+      const result = await axios.get('user/temp')
+      setRole(result.data[0]?.role) // Assuming role is in the first element of data array
+    } catch (err) {
+      console.log(err)
     }
+  }
 
   useEffect(() => {
     if (!initialized.current) {
@@ -65,11 +60,16 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
       tempDataUser()
     }
   }, [])
+
+  const handleClick = (id: string) => {
+    onButtonClick(id)
+  }
+
   return (
     <TabsContent value='Material' className='ml-12 mr-12'>
       <div className='w-full h-screen flex flex-col justify-start gap-5'>
         <div className='w-full h-1/5 flex justify-between items-end'>
-          <h1 className='text-2xl font-bold'>Material Management</h1>
+          <h1 className='text-2xl font-bold'>{title}</h1>
           <div className='flex justify-end w-1/2'>
             <TabsList>
               <TabsTrigger value='Material'>Material Management</TabsTrigger>
@@ -96,14 +96,14 @@ const MaterialTable: React.FC<ManagementTableProps> = ({
               ))}
             </div>
             <div className='w-1/3 flex justify-end'>
-              <Button variant={'destructive'} size={'search'}>
+              <Button variant='destructive' size='search'>
                 Search
               </Button>
             </div>
           </div>
           <div className='overflow-y-scroll tracking-tighter'>
             <Table className='border-2'>
-              <TableCaption>end of table</TableCaption>
+              <TableCaption>End of table</TableCaption>
               <TableHeader>
                 <TableRow className='font-bold text-xl text-black'>
                   <TableHead className='w-[50px]'>No</TableHead>

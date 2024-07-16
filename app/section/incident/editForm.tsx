@@ -1,81 +1,63 @@
-// RegForm.tsx
-
+import React, { useState, useEffect, useRef } from 'react'
+import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
 import Select from 'react-select'
-import axios from '../api/axios'
-import React, {useState, useEffect, useRef} from 'react'
 
-interface RegFormProps {
+interface IncidentEditFormProps {
   title: string
-  buttonNames: { name: string }[]
 }
 
-let optionsPrjk
-let optionsSite
-let optionsStatus
-let optionInc
-
 const optionSeverity = [
-  {
-    value : 1, label: "Very High Priority"
-  },
-  {
-    value : 2, label: "High Priority"
-  },
-  {
-    value : 3, label: "Medium Priority"
-  },
-  {
-    value : 4, label: "Low Priority"
-  },
+  { value: 1, label: 'Very High Priority' },
+  { value: 2, label: 'High Priority' },
+  { value: 3, label: 'Medium Priority' },
+  { value: 4, label: 'Low Priority' },
 ]
 
-const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    // Add logic
-    updatePost()
-  }
-
-  const [email_requester, setEmailRequester] = useState('')
+const IncidentEditForm: React.FC<IncidentEditFormProps> = ({ title }) => {
+  const [emailRequester, setEmailRequester] = useState('')
   const [company, setCompany] = useState('')
   const [subject, setSubject] = useState('')
-  const [id_projek, setIdProjek] = useState('')
-  const [id_site, setIdSite] = useState('')
+  const [idProjek, setIdProjek] = useState('')
+  const [idSite, setIdSite] = useState('')
   const [severity, setSeverity] = useState('')
   const [file, setFile] = useState('')
-  const [id_status, setIdStatus] = useState('')
+  const [idStatus, setIdStatus] = useState('')
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
   const [detail, setDetail] = useState('')
   const [idTicket, setIdTicket] = useState('')
-  const [selectedSite, setSelectedSite] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(false)
-  const [selectedPrjk, setSelectedPrjk] = useState(false)
-  const [selectedSeverity, setSelectedSeverity] = useState(false)
-  const [selectedIncidentTicket, setSelectedIncidentTicket] = useState(false)
+  const [selectedSite, setSelectedSite] = useState<any>(null)
+  const [selectedStatus, setSelectedStatus] = useState<any>(null)
+  const [selectedPrjk, setSelectedPrjk] = useState<any>(null)
+  const [selectedSeverity, setSelectedSeverity] = useState<any>(null)
+  const [selectedIncidentTicket, setSelectedIncidentTicket] =
+    useState<any>(null)
   const initialized = useRef(false)
 
-  const handleChangesite = (selectedSite) => {
+  let optionsPrjk: { value: string; label: string }[] = []
+  let optionsSite: { value: string; label: string }[] = []
+  let optionsStatus: { value: string; label: string }[] = []
+  let optionInc: { value: any[]; label: string }[] = []
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    updatePost()
+  }
+
+  const handleChangesite = (selectedSite: any) => {
     setSelectedSite(selectedSite)
     setIdSite(selectedSite.value)
   }
-  const handleChangeStatus = (selectedStatus) => {
+
+  const handleChangeStatus = (selectedStatus: any) => {
     setSelectedStatus(selectedStatus)
     setIdStatus(selectedStatus.value)
   }
-  const handleChangeIncidentTicket = (selectedIncidentTicket) => {
+
+  const handleChangeIncidentTicket = (selectedIncidentTicket: any) => {
     setSelectedIncidentTicket(selectedIncidentTicket)
     setIdTicket(selectedIncidentTicket.value[0].no)
     setEmailRequester(selectedIncidentTicket.value[0].email_requester)
@@ -84,89 +66,104 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
     setDetail(selectedIncidentTicket.value[0].detail)
     setIdTicket(selectedIncidentTicket.value[0].idTicket)
   }
-  const handleChangeSeverity = (selectedSeverity) => {
+
+  const handleChangeSeverity = (selectedSeverity: any) => {
     setSelectedSeverity(selectedSeverity)
     setSeverity(selectedSeverity.value)
   }
-  const handleChangeprjk = (selectedPrjk) => {
+
+  const handleChangeprjk = (selectedPrjk: any) => {
     setSelectedPrjk(selectedPrjk)
     setIdProjek(selectedPrjk.value)
   }
-  const updatePost = async() =>{
+
+  const updatePost = async () => {
     try {
-      const updateData = await axios.patch("incident", {email_requester, company, subject, id_projek, id_site
-        ,severity, file, detail, id_status, notes, email, idTicket
+      const updateData = await axios.patch('incident', {
+        email_requester,
+        company,
+        subject,
+        id_projek: idProjek,
+        id_site: idSite,
+        severity,
+        file,
+        detail,
+        id_status: idStatus,
+        notes,
+        email,
+        idTicket,
       })
-    }
-    catch(err) {
-      console.log(err)
-    }
-  }
-  const getSiteId = async() =>{
-    try{
-      const resultId = await axios.get("site")
-      optionsSite = resultId.data.map((data) => {
-        return { value:data.No , label:data.nama_site}
-      })
-    }
-    catch(err) {
+    } catch (err) {
       console.log(err)
     }
   }
 
-  const getIncidentDetail = async() => {
-    try{
-    const result = await axios.get('incident')
-    optionInc = result.data.map((data) => {
-      return { value: [{
-        no : data.no,
-        email_requester : data.email_requester,
-        company : data.company,
-        subject : data.subject,
-        detail : data.detail,
-        idTicket: data.idTicket}], label:data.idTicket}
-    })
-    }
-    catch(err) {
+  const getSiteId = async () => {
+    try {
+      const resultId = await axios.get('site')
+      optionsSite = resultId.data.map((data: any) => ({
+        value: data.No,
+        label: data.nama_site,
+      }))
+    } catch (err) {
       console.log(err)
     }
   }
 
-  
-  const getStatusId = async() =>{
-    try{
-      const result = await axios.get("incStatus")
-      optionsStatus = result.data.map((data) => {
-        return { value: data.no, label : data.status}
-      })
-    }
-    catch(err) {
-      console.log(err)
-    }
-  }
-  const getPrjkId = async() =>{
-    try{
-      const resultId = await axios.get("projek")
-      optionsPrjk = resultId.data.map((data) => {
-        return { value:data.No , label:data.nama_projek}
-      })
-    }
-    catch(err) {
+  const getIncidentDetail = async () => {
+    try {
+      const result = await axios.get('incident')
+      optionInc = result.data.map((data: any) => ({
+        value: [
+          {
+            no: data.no,
+            email_requester: data.email_requester,
+            company: data.company,
+            subject: data.subject,
+            detail: data.detail,
+            idTicket: data.idTicket,
+          },
+        ],
+        label: data.idTicket,
+      }))
+    } catch (err) {
       console.log(err)
     }
   }
 
-  useEffect(() =>{
-    if(!initialized.current){
+  const getStatusId = async () => {
+    try {
+      const result = await axios.get('incStatus')
+      optionsStatus = result.data.map((data: any) => ({
+        value: data.no,
+        label: data.status,
+      }))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getPrjkId = async () => {
+    try {
+      const resultId = await axios.get('projek')
+      optionsPrjk = resultId.data.map((data: any) => ({
+        value: data.No,
+        label: data.nama_projek,
+      }))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    if (!initialized.current) {
       initialized.current = true
       getSiteId()
       getPrjkId()
       getStatusId()
       getIncidentDetail()
     }
-  }, [] )
-
-
+  }, [])
 
   return (
     <TabsContent
@@ -194,7 +191,7 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               value={selectedIncidentTicket}
               onChange={handleChangeIncidentTicket}
               required
-              />
+            />
           </div>
           <div className='mb-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -205,7 +202,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill email register'
               required
               value={email_requester}
-              onChange={(e)=>{setEmailRequester(e.target.value)}}
+              onChange={(e) => {
+                setEmailRequester(e.target.value)
+              }}
               type='email'
             />
           </div>
@@ -218,7 +217,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill Company'
               type='text'
               value={company}
-              onChange={(e)=>{setCompany(e.target.value)}}
+              onChange={(e) => {
+                setCompany(e.target.value)
+              }}
             />
           </div>
           <div className='mb-6'>
@@ -230,7 +231,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Fill Subject Incident'
               type='text'
               value={subject}
-              onChange={(e)=>{setSubject(e.target.value)}}
+              onChange={(e) => {
+                setSubject(e.target.value)
+              }}
             />
           </div>
           <div className='mb-6 md:flex md:gap-6'>
@@ -239,10 +242,10 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 Site
               </label>
               <Select
-              options={optionsSite}
-              value={selectedSite}
-              onChange={handleChangesite}
-              required
+                options={optionsSite}
+                value={selectedSite}
+                onChange={handleChangesite}
+                required
               />
             </div>
             <div className='md:w-1/2'>
@@ -263,11 +266,11 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
                 Projek
               </label>
               <Select
-              options={optionsPrjk}
-              value={selectedPrjk}
-              onChange={handleChangeprjk}
-              required
-            />
+                options={optionsPrjk}
+                value={selectedPrjk}
+                onChange={handleChangeprjk}
+                required
+              />
             </div>
             <div className='md:w-1/2'>
               <Input
@@ -284,7 +287,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
               placeholder='Fill Detail Incident........'
               value={detail}
-              onChange={(e)=>{setDetail(e.target.value)}}
+              onChange={(e) => {
+                setDetail(e.target.value)
+              }}
             />
           </div>
           <div className='flex items-center justify-between'>
@@ -294,14 +299,14 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
           </div>
         </form>
         <form className='w-1/3 mt-6 flex flex-col'>
-        <label className='block text-gray-700 text-sm font-bold mb-2'>
-                Status
-        </label>
-        <Select
-              options={optionsStatus}
-              value={selectedStatus}
-              onChange={handleChangeStatus}
-              required
+          <label className='block text-gray-700 text-sm font-bold mb-2'>
+            Status
+          </label>
+          <Select
+            options={optionsStatus}
+            value={selectedStatus}
+            onChange={handleChangeStatus}
+            required
           />
           <div className='mt-6'>
             <label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -310,7 +315,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
             <textarea
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none'
               placeholder='Notes..'
-              onChange={(e)=>{setNotes(e.target.value)}}
+              onChange={(e) => {
+                setNotes(e.target.value)
+              }}
             />
           </div>
           <div className='md:w-1/2 mb-6 md:mb-0'>
@@ -321,7 +328,9 @@ const IncidentEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               type='email'
               className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               placeholder='Fill Email'
-              onChange={(e)=>{setEmail(e.target.value)}}
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
             />
           </div>
         </form>

@@ -80,7 +80,7 @@ export default function Todo() {
     router.refresh()
   }
 
-  const handleChangeProjek = (selectedOptionProjek) => {
+  const handleChangeProjek = (selectedOptionProjek: any) => {
     setSelectedOptionProjek(selectedOptionProjek)
     setNamaProjek(selectedOptionProjek.value[0].namaProjek)
     setUser(selectedOptionProjek.value[0].user)
@@ -88,7 +88,7 @@ export default function Todo() {
     getTodo()
   }
 
-  const handlechangeTodo = (selectedOptionTodo) => {
+  const handlechangeTodo = (selectedOptionTodo: any) => {
     setSelectedOptionTodo(selectedOptionTodo)
     setNo(selectedOptionTodo.value)
   }
@@ -112,9 +112,10 @@ export default function Todo() {
       if (result.data) {
         setState(true)
         setTodoList(result.data)
-        optionTodo = result.data.map((todoData)=>{
+        optionTodo = result.data.map((todoData: any) => {
           return {
-            value : todoData.no, label: todoData.no
+            value: todoData.no,
+            label: todoData.no,
           }
         })
       }
@@ -152,10 +153,18 @@ export default function Todo() {
               className='w-full '
             />
             <div className='w-1/3 flex gap-2'>
-              <Button onClick={handleSubmitFinish} size={'save'} variant={'destructive'}>
+              <Button
+                onClick={handleSubmitFinish}
+                size={'save'}
+                variant={'destructive'}
+              >
                 Finish
               </Button>
-              <Button onClick={handleSubmitPending} size={'save'} variant={'destructive'}>
+              <Button
+                onClick={handleSubmitPending}
+                size={'save'}
+                variant={'destructive'}
+              >
                 Pending
               </Button>
             </div>
@@ -284,7 +293,7 @@ export default function Todo() {
                   <Card>
                     <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                       <CardTitle className='text-sm font-medium'>
-                      Nomor Id To do {todos.no} : {todos.todo}
+                        Nomor Id To do {todos.no} : {todos.todo}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>

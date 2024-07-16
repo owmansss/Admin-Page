@@ -1,16 +1,7 @@
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { tableData } from './data'
+
 import axios from '../api/axios'
 import React, {useState, useEffect} from 'react'
 

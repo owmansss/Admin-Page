@@ -5,7 +5,8 @@ import MaterialSummary from './materialSummary'
 import RecentTask from './recentTask'
 import axios from '../api/axios'
 import React,{useState, useEffect, useRef} from 'react'
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from 'jwt-decode'
+
 
 export default function Dashboard() {
   const [name, setName] = useState('')

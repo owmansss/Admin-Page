@@ -1,62 +1,67 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import Select from 'react-select'
+import Select, { ValueType } from 'react-select'
 import axios from '../api/axios'
-import React, {useState, useEffect, useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+
+interface Option {
+  value: string
+  label: string
+}
 
 interface RegFormProps {
   title: string
   buttonNames: { name: string }[]
 }
 
-let options
-
 const SiteEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
-  const [sitename, setsitename] = useState('')
-  const [no, setNo] = useState('')
-  const [message, setMessage] = useState([])
-  const [selectedOption, setSelectedOption] = useState(false)
-  const initialized = useRef(false)
+  const [sitename, setsitename] = useState<string>('')
+  const [no, setNo] = useState<string>('')
+  const [message, setMessage] = useState<string[]>([])
+  const [selectedOption, setSelectedOption] =
+    useState<ValueType<Option, false>>(null)
+  const initialized = useRef<boolean>(false)
+  let options: Option[] = []
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (selectedOption: ValueType<Option, false>) => {
     setSelectedOption(selectedOption)
-    setsitename(selectedOption.label)
-    setNo(selectedOption.value)
-  }
-  
-  const getSiteId = async() =>{
-    try{
-      const resultId = await axios.get("site")
-      options = resultId.data.map((data) => {
-        return { value:data.No , label:data.nama_site}
-      })
+    if (selectedOption) {
+      setsitename((selectedOption as Option).label)
+      setNo((selectedOption as Option).value)
+    } else {
+      setsitename('')
+      setNo('')
     }
-    catch(err) {
+  }
+
+  const getSiteId = async () => {
+    try {
+      const resultId = await axios.get('site')
+      options = resultId.data.map((data: any) => ({
+        value: data.No,
+        label: data.nama_site,
+      }))
+    } catch (err) {
       console.log(err)
     }
   }
 
-  useEffect(() =>{
-    if(!initialized.current){
+  useEffect(() => {
+    if (!initialized.current) {
       initialized.current = true
       getSiteId()
     }
-  }, [] )
+  }, [])
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    // Add logic
-    const update = async() => {
-     try{
-      const result = await axios.patch("site",{no, sitename})
-      setMessage(result.data)
-     }
-     catch(err){
+    try {
+      const result = await axios.patch('site', { no, sitename })
+      setMessage([result.data])
+    } catch (err) {
       console.log(err)
-     }
     }
-    update()
   }
 
   return (
@@ -76,15 +81,14 @@ const SiteEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
       </div>
       <div className='w-full h-screen gap-5 flex flex-col'>
         <form onSubmit={handleSubmit} className='w-full'>
-        <div className='mb-6'>
-            <label>
-              current siteName
-            </label>
+          <div className='mb-6'>
+            <label>Current Site Name</label>
             <Select
-            options={options}
-            value={selectedOption}
-            onChange={handleChange}
-            required
+              options={options}
+              value={selectedOption}
+              onChange={handleChange}
+              isClearable
+              required
             />
           </div>
           <div className='mb-6'>
@@ -96,13 +100,14 @@ const SiteEditForm: React.FC<RegFormProps> = ({ title, buttonNames }) => {
               placeholder='Site Name'
               type='text'
               value={sitename}
-              onChange={(e) => {setsitename(e.target.value)}}
+              onChange={(e) => {
+                setsitename(e.target.value)
+              }}
               required
             />
           </div>
-          <div className='mb-6 md:flex md:gap-6'></div>
           <div className='flex items-center justify-between'>
-            <Button type='submit' variant={'destructive'} size={'search'}>
+            <Button type='submit' variant='destructive' size='search'>
               Submit
             </Button>
           </div>

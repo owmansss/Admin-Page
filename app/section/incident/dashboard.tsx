@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, useEffect, useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from '../api/axios'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,46 +14,43 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-interface ManagementTableProps {
+
+interface IncidentTableProps {
   title: string
+  value: any
   inputs: { index: number; placeholder: string }[]
   tableHeads: { name: string }[]
-  tableData: any[]
-  buttonNames: { id: string; name: string }[]
   onButtonClick: (id: string) => void
 }
 
-const IncidentTable: React.FC<ManagementTableProps> = ({
+const IncidentTable: React.FC<IncidentTableProps> = ({
   title,
   inputs,
   tableHeads,
-  tableData,
-  buttonNames,
   onButtonClick,
 }) => {
-  const handleClick = (id: string) => {
-    onButtonClick(id)
-  }
+  const initialized = useRef<boolean>(false)
+  const [incData, setIncData] = useState<any[]>([])
 
-  const initialized = useRef(false)
-  const [incData, setIncData] = useState([])
-  
-  const getInc = async() => {
-    try{
-      const result = await axios.get("incident")
+  const getInc = async () => {
+    try {
+      const result = await axios.get('incident')
       setIncData(result.data)
-    }
-    catch(err) {
-      console.log(err)
+    } catch (err) {
+      console.error('Error fetching incidents:', err)
     }
   }
 
-  useEffect(() =>{
-    if(!initialized.current){
+  useEffect(() => {
+    if (!initialized.current) {
       initialized.current = true
       getInc()
     }
-  }, [] )
+  }, [])
+
+  const handleClick = (id: string) => {
+    onButtonClick(id)
+  }
 
   return (
     <TabsContent
@@ -61,7 +58,7 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
       className='h-screen flex flex-col ml-12 gap-5 mr-12'
     >
       <div className='w-full h-[20%] flex justify-between items-end'>
-        <h1 className='text-2xl font-bold'>Incident Management</h1>
+        <h1 className='text-2xl font-bold'>{title}</h1>
         <div className='flex justify-end w-1/2'>
           <TabsList>
             <TabsTrigger value='Incident'>Incident Management</TabsTrigger>
@@ -93,25 +90,18 @@ const IncidentTable: React.FC<ManagementTableProps> = ({
             <TableCaption>end of table</TableCaption>
             <TableHeader>
               <TableRow className='font-bold text-xl text-black'>
-                <TableHead className='w-[50px]'>No</TableHead>
-                <TableHead className='w-[50px]'>Email Requester</TableHead>
-                <TableHead className='w-[50px]'>Company</TableHead>
-                <TableHead className='w-[50px]'>Subject</TableHead>
-                <TableHead className='w-[50px]'>Nama Projek</TableHead>
-                <TableHead className='w-[50px]'>Nama site</TableHead>
-                <TableHead className='w-[50px]'>Severity</TableHead>
-                <TableHead className='w-[50px]'>Detail</TableHead>
-                <TableHead className='w-[50px]'>Status</TableHead>
-                <TableHead className='w-[50px]'>Notes</TableHead>
-                <TableHead className='w-[50px]'>Asignee</TableHead>
-                <TableHead className='w-[50px]'>Ticket ID</TableHead>
+                {tableHeads.map(({ name }) => (
+                  <TableHead key={name} className='w-[50px]'>
+                    {name}
+                  </TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
               {incData.map((data, index) => (
                 <TableRow key={data.id || index}>
                   {Object.values(data).map((value, idx) => (
-                    <TableCell key={idx}>{value as String}</TableCell>
+                    <TableCell key={idx}>{`${value}`}</TableCell>
                   ))}
                 </TableRow>
               ))}
